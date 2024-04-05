@@ -13,14 +13,20 @@ VALUES ('CTM0000000001', 'Nguyen Hoang', 'Hai', 'Sai Gon', '0782748863');
 INSERT INTO employee (employeeID, firstname, lastname, DOB, position, salary)
 VALUES ('EP0000000001', 'Nguyen Van', 'Hieu', NULL, 'Sale', 500);
 
+INSERT INTO employee (employeeID, firstname, lastname, DOB, position, salary)
+VALUES ('EP0000000002', 'Nguyen Hoang', 'Hai', '2004-05-12', 'Sale', 500);
+
 INSERT INTO supplier (supplierID, supplierName)
 VALUES ('SP0000000001', 'Asus');
 
-INSERT INTO product (productID, productName, type, quantity, warrantyTime, price)
-VALUES ('PD0000000001', 'VivoBook 14 OLED M1405YA KM047W', 'Laptop', 50, 24, 525);
+INSERT INTO supplier (supplierID, supplierName)
+VALUES ('SP0000000002', 'HP');
 
-INSERT INTO productdetail (productID, supplierID, MFG, RAM, ROM, CPU, VGA, keyboard, screen, OS, size, pin, type)
-VALUES ('PD0000000001', 'SP0000000001', '2023', '8GB', '512GB', 'Ryzen™ 5 7530U', 'AMD Radeon™ Graphics', 'Chiclet Keyboard', 'OLED', 'Windows 11 Home', '31.71 x 22.20 x 1.99', '50WHrs', 'Gaming');
+INSERT INTO product (productID, supplierName, productName, type, quantity, warrantyTime, price)
+VALUES ('PD0000000001', 'Asus', 'VivoBook 14 OLED M1405YA KM047W', 'Laptop', 50, 24, 525);
+
+INSERT INTO productdetail (productID, MFG, RAM, ROM, CPU, VGA, keyboard, screen, OS, size, pin, type)
+VALUES ('PD0000000001', '2023', '8GB', '512GB', 'Ryzen™ 5 7530U', 'AMD Radeon™ Graphics', 'Chiclet Keyboard', 'OLED', 'Windows 11 Home', '31.71 x 22.20 x 1.99', '50WHrs', 'Gaming');
 
 INSERT INTO import (importID, employeeID, supplierID, date, totalCost)
 VALUES ('IP0000000001', 'EP0000000001', 'SP0000000001', '2024-03-26', 25000);
@@ -39,9 +45,6 @@ VALUES ('WRT0000000001', 'PD0000000001', 'IV0000000001', 'CTM0000000001', '2024-
 
 -- DEMO LOGIN
 SELECT customerID FROM account WHERE username LIKE 'panda' AND password LIKE '1205';
-
--- DEMO ADD TO CART
-UPDATE customer SET cart = 'PD0000000001, PD0000000002, PD0000000003, PD0000000004, PD0000000005' WHERE customerID = 'CTM0000000001';
 
 -- DEMO UPDATE
 UPDATE account SET password = '12052004' WHERE username = 'panda';
@@ -84,3 +87,26 @@ DELETE FROM productdetail WHERE productID = 'PD0000000001';
 DELETE FROM supplier WHERE supplierID = 'SP0000000001';
 
 DELETE FROM warranty WHERE warrantyID = 'WRT0000000001';
+
+SELECT * FROM invoice WHERE date LIKE '2024-03-28';
+
+-- CREATE TEMPORARY TABLE
+CREATE TEMPORARY TABLE IF NOT EXISTS listOfCustomer AS
+SELECT * FROM warranty
+WHERE customerID = 'CTM1741838458';
+SELECT *
+FROM listOfCustomer
+WHERE EXP > CURRENT_DATE();
+DROP TEMPORARY TABLE IF EXISTS listOfCustomer;
+
+CREATE TEMPORARY TABLE IF NOT EXISTS listOfCustomer AS
+SELECT ivd.* FROM invoice iv
+JOIN invoiceDetail ivd ON iv.invoiceID = ivd.invoiceID
+WHERE iv.customerID = 'CTM1741838458';
+SELECT * FROM listOfCustomer;
+DROP TEMPORARY TABLE IF EXISTS listOfCustomer;
+
+
+
+
+SELECT * FROM warranty WHERE EXP <= '2027-04-04';

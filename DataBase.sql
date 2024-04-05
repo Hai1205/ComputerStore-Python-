@@ -41,6 +41,7 @@ CREATE TABLE Account (
 -- Tạo bảng Product
 CREATE TABLE Product (
     productID VARCHAR(15) PRIMARY KEY,
+    supplierName VARCHAR(15),
     productName VARCHAR(50),
     type VARCHAR(50),
     quantity INT,
@@ -51,7 +52,6 @@ CREATE TABLE Product (
 -- Tạo bảng ProductDetail
 CREATE TABLE ProductDetail (
     productID VARCHAR(15) PRIMARY KEY,
-    supplierID VARCHAR(15),
     MFG VARCHAR(10),
     RAM VARCHAR(50),
     ROM VARCHAR(50),
@@ -128,6 +128,6 @@ CREATE TABLE ImportDetail (
     productID VARCHAR(15),
     quantity INT,
     price INT,
-    cost INT,
+    cost INT
     -- PRIMARY KEY (importID, productID)
 );
