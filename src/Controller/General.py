@@ -30,12 +30,18 @@ from Controller.ProductDetail import ProductDetail
 from Controller.InvoiceDetail import InvoiceDetail
 from Controller.ImportDetail import ImportDetail
 
+from Controller.SalesByYears import SalesByYears
+from Controller.SalesByEmployees import SalesByEmployees
+from Controller.SalesByProducts import SalesByProducts
+from Controller.SpendsByYears import SpendsByYears
+from Controller.SpendsBySuppliers import SpendsBySuppliers
+from Controller.SpendsByProducts import SpendsByProducts
 class General(QMainWindow):
     def __init__(self, app = QApplication(sys.argv)):
         super().__init__()
         self.app = app
         self.stacked_widget = QStackedWidget()
-        self.stacked_widget.resize(1163, 768)
+        self.stacked_widget.setFixedSize(1163, 768)
 
         self.SignIn = SignIn(self) #0
         self.stacked_widget.addWidget(self.SignIn)
@@ -109,8 +115,25 @@ class General(QMainWindow):
         self.ImportDetail = ImportDetail(self) #23
         self.stacked_widget.addWidget(self.ImportDetail)
 
+        self.SalesByYears = SalesByYears(self) #24
+        self.stacked_widget.addWidget(self.SalesByYears)
+        
+        self.SalesByEmployees = SalesByEmployees(self) #25
+        self.stacked_widget.addWidget(self.SalesByEmployees)
+
+        self.SalesByProducts = SalesByProducts(self) #26
+        self.stacked_widget.addWidget(self.SalesByProducts)
+
+        self.SpendsByYears = SpendsByYears(self) #27
+        self.stacked_widget.addWidget(self.SpendsByYears)
+
+        self.SpendsBySuppliers = SpendsBySuppliers(self) #28
+        self.stacked_widget.addWidget(self.SpendsBySuppliers)
+
+        self.SpendsByProducts = SpendsByProducts(self) #29
+        self.stacked_widget.addWidget(self.SpendsByProducts)
+
         self.page(0)
-        # self.page(7)
         self.stacked_widget.show()
         sys.exit(self.app.exec())
 

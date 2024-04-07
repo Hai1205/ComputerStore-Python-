@@ -38,7 +38,7 @@ class SupplierAdmin(QMainWindow):
 
 
     def statistic(self):
-        pass
+        self.general.page(24)
 
     def signOut(self):
         confirmSignout = QMessageBox.question(self, "Sign out", "Are you sure want to sign out?",

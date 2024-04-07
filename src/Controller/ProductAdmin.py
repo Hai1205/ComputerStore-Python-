@@ -35,7 +35,6 @@ class ProductAdmin(QMainWindow):
         self.csp = SupplierAdmin()
 
         self.button()
-        self.reset()
         self.updateCombobox()
 
         self.purchaseDate = datetime.now()
@@ -77,7 +76,7 @@ class ProductAdmin(QMainWindow):
         self.customerID = customerID
 
     def statistic(self):
-        pass
+        self.general.page(24)
 
     def signOut(self):
         confirmSignout = QMessageBox.question(self, "Sign out", "Are you sure want to sign out?",

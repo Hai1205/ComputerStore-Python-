@@ -18,16 +18,14 @@ class WarrantyUser(QMainWindow):
         self.wrt = Model_Warranty()
 
         self.customerID = None
-
-        self.button()
-        self.clear()
-    
-    def reset(self):
         self.ui.purchaseDate.setDisplayFormat("yyyy-MM-dd")
         self.ui.purchaseDate.setDate(QDate.currentDate())
         self.ui.EXP.setDisplayFormat("yyyy-MM-dd")
         EXP = datetime.now() + timedelta(days=24*30+10)
         self.ui.EXP.setDate(EXP.date())
+
+        self.button()
+        self.clear()
     
     def setCustomerID(self, customerID):
         self.customerID = customerID
@@ -132,7 +130,6 @@ class WarrantyUser(QMainWindow):
         self.showData(warrrantyResult)
 
     def clear(self):
-        self.reset()
         self.ui.warrantyID.clear()
         self.ui.productID.clear()
         self.ui.invoiceID.clear()
