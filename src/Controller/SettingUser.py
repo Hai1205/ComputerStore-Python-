@@ -52,7 +52,7 @@ class SettingUser(QMainWindow):
         customer = self.getCustomer()
         phone = customer["phone"]
         if not Controller.checkPhone(phone):
-            QMessageBox.warning(self, "Warning", "Please enter a valid phone number.")
+            QMessageBox.information(self, "Sign up fail", "Please enter the correct phone number format.")
             return
         self.ctm.update(customerID=self.customerID,
                         firstname=customer["firstname"],

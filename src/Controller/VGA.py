@@ -89,7 +89,7 @@ class VGA(QMainWindow):
         self.general.page(7)
 
     def getDetail(self):
-        productID = self.product["productID"]
+        productID = self.Product["productID"]
         MFG = self.ui.MFG.text().strip()
         cores = self.ui.cores.text().strip()
         size = self.ui.size.text().strip()

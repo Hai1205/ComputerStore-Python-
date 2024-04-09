@@ -36,6 +36,9 @@ class ROM(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
+    def setProduct(self, product):
+        self.Product = product
+    
     def management(self):
         self.general.showProductAdmin()
         self.general.page(7)
@@ -86,7 +89,7 @@ class ROM(QMainWindow):
         self.general.page(7)
 
     def getDetail(self):
-        productID = self.product["productID"]
+        productID = self.Product["productID"]
         MFG = self.ui.MFG.text().strip()
         capacity = self.ui.capacity.text().strip()
         writeSpeed = self.ui.writeSpeed.text().strip()

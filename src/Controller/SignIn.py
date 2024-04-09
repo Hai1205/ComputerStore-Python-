@@ -20,10 +20,10 @@ class SignIn(QMainWindow):
         password = self.ui.password.text().strip()
         customerID = None
         if not username:
-            self.ui.massage.setText("Username can not be blank.")
+            QMessageBox.information(self, "Sign in fail", "Username can not be blank.")
             return
         elif not password:
-            self.ui.massage.setText("Password can not be blank.")
+            QMessageBox.information(self, "Sign in fail", "Password can not be blank.")
             return
         
         try:
@@ -32,9 +32,8 @@ class SignIn(QMainWindow):
             if result is not None:
                 customerID = result["customerID"]
                 self.general.setCustomerID(customerID)
-                self.ui.massage.setText("")
             else:
-                self.ui.massage.setText("Username or password is incorrect.")
+                QMessageBox.information(self, "Sign in fail", "Username or password is incorrect.")
                 return
 
         except Exception as e:

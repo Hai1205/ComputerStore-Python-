@@ -124,6 +124,10 @@ class CustomerAdmin(QMainWindow):
         address = customer["address"]
         phone = customer["phone"]
 
+        if not Controller.checkPhone(phone):
+            QMessageBox.information(self, "Update Error", "Please enter the correct phone number format.")
+            return
+
         self.ctm.update(customerID, firstname, lastname, address, phone)
         self.search()
 

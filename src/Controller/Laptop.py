@@ -89,7 +89,7 @@ class Laptop(QMainWindow):
         self.general.page(7)
     
     def getDetail(self):
-        productID = self.product["productID"]
+        productID = self.Product["productID"]
         MFG = self.ui.MFG.text().strip()
         RAM = self.ui.RAM.text().strip()
         ROM = self.ui.ROM.text().strip()

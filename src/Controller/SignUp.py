@@ -1,7 +1,10 @@
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow, QMessageBox
+
 from View.SignUp import Ui_SignUp
+
 from Model.Model_Account import Model_Account
 from Model.Model_Customer import Model_Customer
+
 from Controller.Controller import Controller
 
 class SignUp(QMainWindow):
@@ -37,31 +40,47 @@ class SignUp(QMainWindow):
                 break
 
         if not username:
-            self.ui.massage.setText("Username can not be blank.")
+            QMessageBox.information(self, "Sign up fail", "Username can not be blank.")
+            return
+        elif not Controller.checkUsername(username):
+            QMessageBox.information(self, "Sign up fail", """Please enter the username does not contain: 
+Space
+Special characters.""")
             return
         elif not password:
-            self.ui.massage.setText("Password can not be blank.")
+            QMessageBox.information(self, "Sign up fail", "Password can not be blank.")
             return
         elif not rePassword:
-            self.ui.massage.setText("RePassword can not be blank.")
+            QMessageBox.information(self, "Sign up fail", "RePassword can not be blank.")
             return
         elif not firstname:
-            self.ui.massage.setText("Firstname can not be blank.")
+            QMessageBox.information(self, "Sign up fail", "Firstname can not be blank.")
             return
         elif not lastname:
-            self.ui.massage.setText("Lastname can not be blank.")
+            QMessageBox.information(self, "Sign up fail", "Lastname can not be blank.")
             return
         elif not address:
-            self.ui.massage.setText("Address can not be blank.")
+            QMessageBox.information(self, "Sign up fail", "Address can not be blank.")
             return
         elif not phone:
-            self.ui.massage.setText("Phone can not be blank.")
+            QMessageBox.information(self, "Sign up fail", "Phone can not be blank.")
+            return
+        elif not Controller.checkPassword(password):
+            QMessageBox.information(self, "Sign up fail", """Please enter the password with: 
+At least 6 characters
+At least 1 normal character
+At least 1 capitalized character
+At least 1 number 
+At least 1 special character.""")
             return
         elif password != rePassword:
-            self.ui.massage.setText("Password and Repassword do not match.")
+            QMessageBox.information(self, "Sign up fail", "Password and Repassword do not match.")
             return
         elif self.acc.checkExist(username):
-            self.ui.massage.setText("Username already exists")
+            QMessageBox.information(self, "Sign up fail", "Username already exists")
+            return
+        elif not Controller.checkPhone(phone):
+            QMessageBox.information(self, "Sign up fail", "Please enter the correct phone number format.")
             return
         
         try:
@@ -71,6 +90,8 @@ class SignUp(QMainWindow):
         except Exception as e:
             print(e)
 
+        self.general.page(0)
+
         self.ui.username.clear()
         self.ui.password.clear()
         self.ui.rePassword.clear()
@@ -79,4 +100,4 @@ class SignUp(QMainWindow):
         self.ui.address.clear()
         self.ui.phone.clear()
 
-        self.ui.massage.setText("Successful.")
+        QMessageBox.information(self, "Sign up fail", "Successful.")

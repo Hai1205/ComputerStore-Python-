@@ -89,7 +89,7 @@ class RAM(QMainWindow):
         self.general.page(7)
     
     def getDetail(self):
-        productID = self.product["productID"]
+        productID = self.Product["productID"]
         MFG = self.ui.MFG.text().strip()
         capacity = self.ui.capacity.text().strip()
         SPDspeed = self.ui.SPDspeed.text().strip()

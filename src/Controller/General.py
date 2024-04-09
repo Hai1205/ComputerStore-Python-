@@ -154,6 +154,13 @@ class General(QMainWindow):
     
     def detail(self, product):
         self.ProductDetail.setProduct(product)
+        self.Laptop.setProduct(product)
+        self.RAM.setProduct(product)
+        self.ROM.setProduct(product)
+        self.CPU.setProduct(product)
+        self.VGA.setProduct(product)
+        self.Keyboard.setProduct(product)
+        self.Screen.setProduct(product)
         self.showProductDetail()
 
     def importDetail(self, Import):

@@ -41,12 +41,29 @@ class Controller:
 
     @staticmethod
     def checkPhone(phone):
-        pattern = r'^\+?[0-9]{9,10}$'
-    
+        pattern = r"^(0|\+84)[1-9]\d{8}$"
         if re.match(pattern, phone):
             return True
         else:
             return False
+    
+    @staticmethod
+    def checkPassword(password):
+        pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$"
+        if re.match(pattern, password):
+            return True
+        else:
+            return False
+        
+    @staticmethod
+    def checkUsername(username):
+        pattern = r"^[a-zA-Z0-9]+$"
+        if re.match(pattern, username):
+            return True
+        else:
+            return False
+    
+
 
 
 

@@ -89,7 +89,7 @@ class Keyboard(QMainWindow):
         self.general.page(7)
 
     def getDetail(self):
-        productID = self.product["productID"]
+        productID = self.Product["productID"]
         MFG = self.ui.MFG.text().strip()
         layout = self.ui.layout.text().strip()
         LED = self.ui.LED.text().strip()

@@ -143,7 +143,7 @@ class ProductAdmin(QMainWindow):
             QMessageBox.information(self, "Error", "Please select the product.")
             return
         
-        # self.general.detail(product=self.getProduct())
+        self.general.detail(product=self.getProduct())
         # self.general.page(21)
         product = self.getProduct()
         type = product["type"]
