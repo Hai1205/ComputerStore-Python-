@@ -13,7 +13,7 @@ class Laptop(QMainWindow):
 
         self.pdd = Model_ProductDetail()
         
-        self.Product = None
+        self.productID = None
 
         self.button()
     
@@ -36,8 +36,8 @@ class Laptop(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProduct(self, product):
-        self.Product = product
+    def setProductID(self, productID):
+        self.productID = productID
     
     def management(self):
         self.general.showProductAdmin()
@@ -89,21 +89,22 @@ class Laptop(QMainWindow):
         self.general.page(7)
     
     def getDetail(self):
-        productID = self.Product["productID"]
-        MFG = self.ui.MFG.text().strip()
-        RAM = self.ui.RAM.text().strip()
-        ROM = self.ui.ROM.text().strip()
-        CPU = self.ui.CPU.text().strip()
-        VGA = self.ui.VGA.text().strip()
-        keyboard = self.ui.keyboard.text().strip()
-        screen = self.ui.screen.text().strip()
-        OS = self.ui.OS.text().strip()
-        size = self.ui.size.text().strip()
-        pin = self.ui.pin.text().strip()
-        type = self.ui.type.currentText().strip()
+        result = self.pdd.search(self.productID)
+
+        MFG = result[0]["MFG"]
+        RAM = result[0]["RAM"]
+        ROM = result[0]["ROM"]
+        CPU = result[0]["CPU"]
+        VGA = result[0]["VGA"]
+        keyboard = result[0]["keyboard"]
+        screen = result[0]["screen"]
+        OS = result[0]["OS"]
+        size = result[0]["size"]
+        pin = result[0]["pin"]
+        type = result[0]["type"]
 
         detail = {
-            "productID": productID,
+            "productID": self.productID,
             "MFG": MFG,
             "RAM": RAM,
             "ROM": ROM,
@@ -122,7 +123,7 @@ class Laptop(QMainWindow):
     def add(self):
         detail = self.getDetail()
         self.pdd.addLaptop(detail["productID"], detail["MFG"], detail["RAM"], detail["ROM"], detail["CPU"], detail["VGA"], detail["keyboard"], detail["screen"], detail["OS"], detail["size"], detail["pin"], detail["type"])
-        QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
+        QMessageBox.information(self, "Add Confirmation", "productID has been added successfully.")
 
     def update(self):
         detail = self.getDetail()

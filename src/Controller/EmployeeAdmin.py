@@ -79,49 +79,67 @@ class EmployeeAdmin(QMainWindow):
         self.general.page(2)
 
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            employeeID = self.ui.table.item(self.selectRow, 0).text().strip()
-            firstname = self.ui.table.item(self.selectRow, 1).text().strip()
-            lastname = self.ui.table.item(self.selectRow, 2).text().strip()
-            DOB = self.ui.table.item(self.selectRow, 3).text().strip()
-            position = self.ui.table.item(self.selectRow, 4).text().strip()
-            salary = self.ui.table.item(self.selectRow, 5).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a employee.")
+            return
+        
+        self.setEnabled(False)
+        employeeID = self.ui.table.item(self.selectRow, 0).text().strip()
+        firstname = self.ui.table.item(self.selectRow, 1).text().strip()
+        lastname = self.ui.table.item(self.selectRow, 2).text().strip()
+        DOB = self.ui.table.item(self.selectRow, 3).text().strip()
+        position = self.ui.table.item(self.selectRow, 4).text().strip()
+        salary = self.ui.table.item(self.selectRow, 5).text().strip()
 
-            self.ui.employeeID.setText(employeeID)
-            self.ui.firstname.setText(firstname)
-            self.ui.lastname.setText(lastname)
-            self.ui.DOB.setDate(QDate.fromString(DOB, "yyyy-MM-dd"))
-            self.ui.position.setCurrentText(position)
-            self.ui.salary.setText(salary)
+        self.ui.employeeID.setText(employeeID)
+        self.ui.firstname.setText(firstname)
+        self.ui.lastname.setText(lastname)
+        self.ui.DOB.setDate(QDate.fromString(DOB, "yyyy-MM-dd"))
+        self.ui.position.setCurrentText(position)
+        self.ui.salary.setText(salary)
 
     def add(self):
         employee = self.getEmployee()
-        employeeID = ""
-        if employeeID == "":
-            while True:
-                employeeID = Controller.createEmployeeID()
-                if not self.ep.checkExist(employeeID):
-                    break
+        employeeID = employee["employeeID"]
         firstname = employee["firstname"]
         lastname = employee["lastname"]
         DOB = Controller.strToDate(employee["DOB"])
         position = employee["position"]
         salary = employee["salary"]
 
-        if position == "All":
+        if employeeID:
+            QMessageBox.information(self, "Add Error", "Infornation cannot be entered EmployeeID.")
+            return
+        elif not firstname:
+            QMessageBox.information(self, "Add Error", "Firstname can not be blank.")
+            return
+        elif not lastname:
+            QMessageBox.information(self, "Add Error", "Lastname can not be blank.")
+            return
+        elif position == "All":
             QMessageBox.information(self, "Add Error", "Please choose a different position than All.")
-            return 
+            return
+        elif not salary:
+            QMessageBox.information(self, "Add Error", "Salary can not be blank.")
+            return
+        elif not salary.isdigit():
+            QMessageBox.warning(self, "Add Error", "Please enter an integer value into a salary.")
+            return
+        
+        while True:
+            employeeID = Controller.createEmployeeID()
+            if not self.ep.checkExist(employeeID):
+                break
 
-        self.ep.add(employeeID, firstname, lastname, DOB, position, salary)
+        self.ep.add(employeeID, firstname, lastname, DOB, position, int(salary))
 
         QMessageBox.information(self, "Add Confirmation", "Employee has been added successfully.")
         self.clear()
 
     def update(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Update Error", "Please select the employee.")
+            QMessageBox.information(self, "Update Error", "Please select a employee.")
             return
         
         employee = self.getEmployee()
@@ -132,7 +150,11 @@ class EmployeeAdmin(QMainWindow):
         position = employee["position"]
         salary = employee["salary"]
 
-        self.ep.update(employeeID, firstname, lastname, DOB, position, salary)
+        if not salary.isdigit():
+            QMessageBox.warning(self, "Warning", "Please enter an integer value into a salary.")
+            return
+
+        self.ep.update(employeeID, firstname, lastname, DOB, position, int(salary))
         self.search()
 
     def search(self):
@@ -192,6 +214,7 @@ class EmployeeAdmin(QMainWindow):
 
     def setEnabled(self, bool):
         self.ui.employeeID.setEnabled(bool)
+        self.ui.add.setEnabled(bool)
 
     def clear(self):
         self.selectRow = -1
@@ -206,7 +229,7 @@ class EmployeeAdmin(QMainWindow):
 
     def delete_2(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Delete Error", "Please select the employee.")
+            QMessageBox.information(self, "Delete Error", "Please select a employee.")
             return
         confirmRefund = QMessageBox.question(self, "Warning", "Are you sure want to delete?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

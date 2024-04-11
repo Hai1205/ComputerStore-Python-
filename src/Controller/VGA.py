@@ -13,7 +13,7 @@ class VGA(QMainWindow):
         
         self.pdd = Model_ProductDetail()
         
-        self.Product = None
+        self.productID = None
 
         self.button()
     
@@ -36,8 +36,8 @@ class VGA(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProduct(self, product):
-        self.Product = product
+    def setProductID(self, productID):
+        self.productID = productID
     
     def management(self):
         self.general.showProductAdmin()
@@ -89,14 +89,15 @@ class VGA(QMainWindow):
         self.general.page(7)
 
     def getDetail(self):
-        productID = self.Product["productID"]
-        MFG = self.ui.MFG.text().strip()
-        cores = self.ui.cores.text().strip()
-        size = self.ui.size.text().strip()
-        GPUclock = self.ui.GPUclock.text().strip()
+        result = self.pdd.search(self.productID)
+
+        MFG = result[0]["MFG"]
+        cores = result[0]["cores"]
+        size = result[0]["size"]
+        GPUclock = result[0]["GPUclock"]
 
         detail = {
-            "productID": productID,
+            "productID": self.productID,
             "MFG": MFG,
             "size": size,
             "cores": cores,
@@ -108,7 +109,7 @@ class VGA(QMainWindow):
     def add(self):
         detail = self.getDetail()
         self.pdd.addVGA(detail["productID"], detail["MFG"], detail["cores"], detail["GPUclock"], detail["size"])
-        QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
+        QMessageBox.information(self, "Add Confirmation", "productID has been added successfully.")
 
     def update(self):
         detail = self.getDetail()

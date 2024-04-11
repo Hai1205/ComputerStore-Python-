@@ -88,41 +88,63 @@ class WarrantyAdmin(QMainWindow):
         self.general.page(5)
 
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            warrantyID = self.ui.table.item(self.selectRow, 0).text().strip()
-            productID = self.ui.table.item(self.selectRow, 1).text().strip()
-            invoiceID = self.ui.table.item(self.selectRow, 2).text().strip()
-            customerID = self.ui.table.item(self.selectRow, 3).text().strip()
-            purchaseDate = self.ui.table.item(self.selectRow, 4).text().strip()
-            warrantyTime = self.ui.table.item(self.selectRow, 5).text().strip()
-            EXP = self.ui.table.item(self.selectRow, 6).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a warranty.")
+            return
+        
+        self.setEnabled(False)
+        warrantyID = self.ui.table.item(self.selectRow, 0).text().strip()
+        productID = self.ui.table.item(self.selectRow, 1).text().strip()
+        invoiceID = self.ui.table.item(self.selectRow, 2).text().strip()
+        customerID = self.ui.table.item(self.selectRow, 3).text().strip()
+        purchaseDate = self.ui.table.item(self.selectRow, 4).text().strip()
+        warrantyTime = self.ui.table.item(self.selectRow, 5).text().strip()
+        EXP = self.ui.table.item(self.selectRow, 6).text().strip()
 
-            self.ui.warrantyID.setText(warrantyID)
-            self.ui.productID.setText(productID)
-            self.ui.invoiceID.setText(invoiceID)
-            self.ui.customerID.setText(customerID)
-            self.ui.purchaseDate.setDate(QDate.fromString(purchaseDate, "yyyy-MM-dd"))
-            self.ui.warrantyTime.setText(warrantyTime)
-            self.ui.EXP.setDate(QDate.fromString(EXP, "yyyy-MM-dd"))
+        self.ui.warrantyID.setText(warrantyID)
+        self.ui.productID.setText(productID)
+        self.ui.invoiceID.setText(invoiceID)
+        self.ui.customerID.setText(customerID)
+        self.ui.purchaseDate.setDate(QDate.fromString(purchaseDate, "yyyy-MM-dd"))
+        self.ui.warrantyTime.setText(warrantyTime)
+        self.ui.EXP.setDate(QDate.fromString(EXP, "yyyy-MM-dd"))
     
     def add(self):
         warranty = self.getWarranty()
-        warrantyID = ""
-        if warrantyID == "":
-            while True:
-                warrantyID = Controller.createWarrantyID()
-                if not self.wrt.checkExist(warrantyID):
-                    break
+        warrantyID = warranty["warrantyID"]
         productID = warranty["productID"]
         invoiceID = warranty["invoiceID"]
         customerID = warranty["customerID"]
-        warrantyTime = int(warranty["warrantyTime"])
-        newDate = self.purchaseDate + timedelta(days=warrantyTime*30+10)
-        EXP = newDate.date()
+        warrantyTime = warranty["warrantyTime"]
 
-        self.wrt.add(warrantyID, productID, invoiceID, customerID, self.purchaseDate.date(), warrantyTime, EXP)
+        if warrantyID:
+            QMessageBox.information(self, "Add Error", "Infornation cannot be entered WarrantyID.")
+            return
+        elif not productID:
+            QMessageBox.information(self, "Add Error", "ProductID can not be blank.")
+            return
+        elif not invoiceID:
+            QMessageBox.information(self, "Add Error", "InvoiceID can not be blank.")
+            return
+        elif not customerID:
+            QMessageBox.information(self, "Add Error", "CustomerID can not be blank.")
+            return
+        elif not warrantyTime:
+            QMessageBox.information(self, "Add Error", "Warranty time can not be blank.")
+            return
+        elif not warrantyTime.isdigit():
+            QMessageBox.warning(self, "Add Error", "Please enter an integer value into a warranty time.")
+            return
+
+        while True:
+            warrantyID = Controller.createWarrantyID()
+            if not self.wrt.checkExist(warrantyID):
+                break
+        exp = self.purchaseDate + timedelta(days=int(warrantyTime)*30+10)
+        EXP = exp.date()
+        
+        self.wrt.add(warrantyID, productID, invoiceID, customerID, self.purchaseDate.date(), int(warrantyTime), EXP)
 
         QMessageBox.information(self, "Add Confirmation", "Warranty has been added successfully.")
         self.clear()
@@ -149,7 +171,7 @@ class WarrantyAdmin(QMainWindow):
 
     def update(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Update Error", "Please select your import.")
+            QMessageBox.information(self, "Update Error", "Please select a waranty.")
             return
         
         warranty = self.getWarranty()
@@ -157,7 +179,11 @@ class WarrantyAdmin(QMainWindow):
         purchaseDate = warranty["purchaseDate"]
         warrantyTime = warranty["warrantyTime"]
 
-        self.wrt.update(warrantyID, purchaseDate, warrantyTime)
+        if not warrantyTime.isdigit():
+            QMessageBox.warning(self, "Warning", "Please enter an integer value into a warranty time.")
+            return
+
+        self.wrt.update(warrantyID, purchaseDate, int(warrantyTime))
         self.search()
     
     def setEnabled(self, bool):
@@ -166,6 +192,7 @@ class WarrantyAdmin(QMainWindow):
         self.ui.invoice.setEnabled(bool)
         self.ui.customerID.setEnabled(bool)
         self.ui.EXP.setEnabled(bool)
+        self.ui.add.setEnabled(bool)
 
     def search(self):
         warranty = self.getWarranty()
@@ -239,7 +266,7 @@ class WarrantyAdmin(QMainWindow):
 
     def delete_2(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Delete Error", "Please select the warranty.")
+            QMessageBox.information(self, "Delete Error", "Please select a warranty.")
             return
         confirmRefund = QMessageBox.question(self, "Warning", "Are you sure want to delete?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

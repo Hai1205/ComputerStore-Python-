@@ -13,7 +13,7 @@ class Keyboard(QMainWindow):
         
         self.pdd = Model_ProductDetail()
         
-        self.Product = None
+        self.productID = None
 
         self.button()
     
@@ -36,8 +36,8 @@ class Keyboard(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProduct(self, product):
-        self.Product = product
+    def setProductID(self, productID):
+        self.productID = productID
     
     def management(self):
         self.general.showProductAdmin()
@@ -89,18 +89,19 @@ class Keyboard(QMainWindow):
         self.general.page(7)
 
     def getDetail(self):
-        productID = self.Product["productID"]
-        MFG = self.ui.MFG.text().strip()
-        layout = self.ui.layout.text().strip()
-        LED = self.ui.LED.text().strip()
-        keycap = self.ui.keycap.text().strip()
-        size = self.ui.size_2.text().strip()
-        switch = self.ui.switch_2.text().strip()
-        pin = self.ui.pin.text().strip()
-        hotswap = self.ui.hotswap.currentText().strip()
+        result = self.pdd.search(self.productID)
+
+        MFG = result[0]["MFG"]
+        layout = result[0]["layout"]
+        LED = result[0]["LED"]
+        keycap = result[0]["keycap"]
+        size = result[0]["size"]
+        switch = result[0]["switch"]
+        pin = result[0]["pin"]
+        hotswap = result[0]["hotswap"]
 
         detail = {
-            "productID": productID,
+            "productID": self.productID,
             "MFG": MFG,
             "size": size,
             "layout": layout,
@@ -116,7 +117,7 @@ class Keyboard(QMainWindow):
     def add(self):
         detail = self.getDetail()
         self.pdd.addKeyboard(detail["productID"], detail["MFG"], detail["layout"], detail["size"], detail["LED"], detail["keycap"], detail["switch"], detail["pin"], detail["hotswap"])
-        QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
+        QMessageBox.information(self, "Add Confirmation", "productID has been added successfully.")
 
     def update(self):
         detail = self.getDetail()

@@ -75,23 +75,26 @@ class ProductUser(QMainWindow):
             self.general.page(0)
 
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            productID = self.ui.table.item(self.selectRow, 0).text().strip()
-            supplierName = self.ui.table.item(self.selectRow, 1).text().strip()
-            productName = self.ui.table.item(self.selectRow, 2).text().strip()
-            type = self.ui.table.item(self.selectRow, 3).text().strip()
-            warrantyTime = self.ui.table.item(self.selectRow, 5).text().strip()
-            price = self.ui.table.item(self.selectRow, 6).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a product.")
+            return
+            
+        self.setEnabled(False)
+        productID = self.ui.table.item(self.selectRow, 0).text().strip()
+        supplierName = self.ui.table.item(self.selectRow, 1).text().strip()
+        productName = self.ui.table.item(self.selectRow, 2).text().strip()
+        type = self.ui.table.item(self.selectRow, 3).text().strip()
+        warrantyTime = self.ui.table.item(self.selectRow, 5).text().strip()
+        price = self.ui.table.item(self.selectRow, 6).text().strip()
 
-            self.ui.productID.setText(productID)
-            self.ui.supplierName.setCurrentText(supplierName)
-            self.ui.productName.setText(productName)
-            self.ui.quantity.setText("1")
-            self.ui.price.setText(price)
-            self.ui.type.setCurrentText(type)
-            self.ui.warrantyTime.setText(warrantyTime)
+        self.ui.productID.setText(productID)
+        self.ui.supplierName.setCurrentText(supplierName)
+        self.ui.productName.setText(productName)
+        self.ui.quantity.setText("1")
+        self.ui.price.setText(price)
+        self.ui.type.setCurrentText(type)
+        self.ui.warrantyTime.setText(warrantyTime)
         
     def setEnabled(self, bool):
         self.ui.productID.setEnabled(bool)
@@ -103,10 +106,10 @@ class ProductUser(QMainWindow):
 
     def detail(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Error", "Please select the product.")
+            QMessageBox.information(self, "Error", "Please select a product.")
             return
         
-        self.general.detail(self.getProduct())
+        self.general.detailUser(self.getProduct())
         self.general.page(21)
 
     def search(self):
@@ -140,7 +143,7 @@ class ProductUser(QMainWindow):
 
     def order(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Order Error", "Please select the product.")
+            QMessageBox.information(self, "Order Error", "Please select a product.")
             return
         
         warrantyID = None
@@ -163,11 +166,10 @@ class ProductUser(QMainWindow):
         warrantyTime = int(product["warrantyTime"])
         price = int(product["price"])
 
-        if quantity == "":
+        if not quantity:
             QMessageBox.warning(self, "Warning", "Please enter a value into the quantity.")
             return
-        
-        if not quantity.isdigit():
+        elif not quantity.isdigit():
             QMessageBox.warning(self, "Warning", "Please enter an integer value into the quantity.")
             return
 

@@ -13,7 +13,7 @@ class CPU(QMainWindow):
         
         self.pdd = Model_ProductDetail()
         
-        self.Product = None
+        self.productID = None
 
         self.button()
     
@@ -36,8 +36,8 @@ class CPU(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProduct(self, product):
-        self.Product = product
+    def setProductID(self, productID):
+        self.productID = productID
     
     def management(self):
         self.general.showProductAdmin()
@@ -89,14 +89,15 @@ class CPU(QMainWindow):
         self.general.page(7)
 
     def getDetail(self):
-        productID = self.Product["productID"]
-        MFG = self.ui.MFG.text().strip()
-        cores = self.ui.cores.text().strip()
-        series = self.ui.series.text().strip()
-        threads = self.ui.threads.text().strip()
+        result = self.pdd.search(self.productID)
+
+        MFG = result[0]["MFG"]
+        cores = result[0]["cores"]
+        series = result[0]["series"]
+        threads = result[0]["threads"]
 
         detail = {
-            "productID": productID,
+            "productID": self.productID,
             "MFG": MFG,
             "cores": cores,
             "series": series,
@@ -108,7 +109,7 @@ class CPU(QMainWindow):
     def add(self):
         detail = self.getDetail()
         self.pdd.addCPU(detail["productID"], detail["MFG"], detail["cores"], detail["threads"], detail["series"])
-        QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
+        QMessageBox.information(self, "Add Confirmation", "productID has been added successfully.")
 
     def update(self):
         detail = self.getDetail()

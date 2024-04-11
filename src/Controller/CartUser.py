@@ -66,26 +66,29 @@ class CartUser(QMainWindow):
             self.general.page(0)
 
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            invoiceID = self.ui.table.item(self.selectRow, 0).text().strip()
-            productID = self.ui.table.item(self.selectRow, 1).text().strip()
-            warrantyID = self.ui.table.item(self.selectRow, 2).text().strip()
-            quantity = self.ui.table.item(self.selectRow, 3).text().strip()
-            price = self.ui.table.item(self.selectRow, 4).text().strip()
-            cost = self.ui.table.item(self.selectRow, 5).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a invoice detail.")
+            return
+        
+        self.setEnabled(False)
+        invoiceID = self.ui.table.item(self.selectRow, 0).text().strip()
+        productID = self.ui.table.item(self.selectRow, 1).text().strip()
+        warrantyID = self.ui.table.item(self.selectRow, 2).text().strip()
+        quantity = self.ui.table.item(self.selectRow, 3).text().strip()
+        price = self.ui.table.item(self.selectRow, 4).text().strip()
+        cost = self.ui.table.item(self.selectRow, 5).text().strip()
 
-            self.ui.invoiceID.setText(invoiceID)
-            self.ui.productID.setText(productID)
-            self.ui.warrantyID.setText(warrantyID)
-            self.ui.price.setText(price)
-            self.ui.quantity.setText(quantity)
-            self.ui.cost.setText(cost)
+        self.ui.invoiceID.setText(invoiceID)
+        self.ui.productID.setText(productID)
+        self.ui.warrantyID.setText(warrantyID)
+        self.ui.price.setText(price)
+        self.ui.quantity.setText(quantity)
+        self.ui.cost.setText(cost)
 
     def refund(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Refund Error", "Please select your invoiceDetail.")
+            QMessageBox.information(self, "Refund Error", "Please select your invoice detail.")
             return
         confirmRefund = QMessageBox.question(self, "Warning", "Are you sure want to refund?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

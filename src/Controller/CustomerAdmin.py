@@ -77,35 +77,58 @@ class CustomerAdmin(QMainWindow):
     
     def setEnabled(self, bool):
         self.ui.customerID.setEnabled(bool)
+        self.ui.add.setEnabled(bool)
 
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            customerID = self.ui.table.item(self.selectRow, 0).text().strip()
-            firstname = self.ui.table.item(self.selectRow, 1).text().strip()
-            lastname = self.ui.table.item(self.selectRow, 2).text().strip()
-            address = self.ui.table.item(self.selectRow, 3).text().strip()
-            phone = self.ui.table.item(self.selectRow, 4).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a customer.")
+            return
+        
+        self.setEnabled(False)
+        customerID = self.ui.table.item(self.selectRow, 0).text().strip()
+        firstname = self.ui.table.item(self.selectRow, 1).text().strip()
+        lastname = self.ui.table.item(self.selectRow, 2).text().strip()
+        address = self.ui.table.item(self.selectRow, 3).text().strip()
+        phone = self.ui.table.item(self.selectRow, 4).text().strip()
 
-            self.ui.customerID.setText(customerID)
-            self.ui.firstname.setText(firstname)
-            self.ui.lastname.setText(lastname)
-            self.ui.address.setText(address)
-            self.ui.phone.setText(phone)
+        self.ui.customerID.setText(customerID)
+        self.ui.firstname.setText(firstname)
+        self.ui.lastname.setText(lastname)
+        self.ui.address.setText(address)
+        self.ui.phone.setText(phone)
 
     def add(self):
         customer = self.getCustomer()
-        customerID = ""
-        if customerID == "":
-            while True:
-                customerID = Controller.createCustomerID()
-                if not self.ctm.checkExist(customerID):
-                    break
+        customerID = customer["customerID"]
         firstname = customer["firstname"]
         lastname = customer["lastname"]
         address = customer["address"]
         phone = customer["phone"]
+
+        if customerID:
+            QMessageBox.information(self, "Add Error", "Infornation cannot be entered customerID.")
+            return
+        elif not firstname:
+            QMessageBox.information(self, "Add Error", "Firstname can not be blank.")
+            return
+        elif not lastname:
+            QMessageBox.information(self, "Add Error", "Lastname can not be blank.")
+            return
+        elif not address:
+            QMessageBox.information(self, "Add Error", "Address can not be blank.")
+            return
+        elif not phone:
+            QMessageBox.information(self, "Add Error", "Phone time can not be blank.")
+            return
+        elif not Controller.checkPhone(phone):
+            QMessageBox.information(self, "Sign up fail", "Please enter the correct phone number format.")
+            return
+        
+        while True:
+            customerID = Controller.createCustomerID()
+            if not self.ctm.checkExist(customerID):
+                break
 
         self.ctm.add(customerID, firstname, lastname, address, phone)
 

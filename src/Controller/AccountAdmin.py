@@ -79,29 +79,59 @@ class AccountAdmin(QMainWindow):
     def setEnabled(self, bool):
         self.ui.username.setEnabled(bool)
         self.ui.customerID.setEnabled(bool)
+        self.ui.add.setEnabled(bool)
 
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            username = self.ui.table.item(self.selectRow, 0).text().strip()
-            password = self.ui.table.item(self.selectRow, 1).text().strip()
-            customerID = self.ui.table.item(self.selectRow, 2).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a account.")
+            return
 
-            self.ui.username.setText(username)
-            self.ui.password.setText(password)
-            self.ui.customerID.setText(customerID)
+        self.setEnabled(False)
+        username = self.ui.table.item(self.selectRow, 0).text().strip()
+        password = self.ui.table.item(self.selectRow, 1).text().strip()
+        customerID = self.ui.table.item(self.selectRow, 2).text().strip()
+
+        self.ui.username.setText(username)
+        self.ui.password.setText(password)
+        self.ui.customerID.setText(customerID)
 
     def add(self):
         account = self.getAccount()
         username = account["username"]
         password = account["password"]
-        customerID = ""
-        if customerID == "":
-            while True:
-                customerID = Controller.createCustomerID()
-                if not self.ctm.checkExist(customerID):
-                    break
+        customerID  = account["customerID"]
+
+        if not username:
+            QMessageBox.information(self, "Add Error", "Username can not be blank.")
+            return
+        elif not Controller.checkUsername(username):
+            QMessageBox.information(self, "Sign up fail", """Please enter the username does not contain: 
+Space
+Special characters.""")
+            return
+        elif self.acc.checkExist(username):
+            QMessageBox.information(self, "Sign up fail", "Username already exists")
+            return
+        elif not password:
+            QMessageBox.information(self, "Add Error", "Password can not be blank.")
+            return
+        elif not Controller.checkPassword(password):
+            QMessageBox.information(self, "Sign up fail", """Please enter the password with: 
+At least 6 characters
+At least 1 normal character
+At least 1 capitalized character
+At least 1 number 
+At least 1 special character.""")
+            return
+        elif customerID:
+            QMessageBox.information(self, "Add Error", "Infornation cannot be entered CustomerID.")
+            return
+        
+        while True:
+            customerID = Controller.createCustomerID()
+            if not self.ctm.checkExist(customerID):
+                break
 
         self.acc.signUp(username, password, customerID)
 
@@ -110,12 +140,21 @@ class AccountAdmin(QMainWindow):
 
     def update(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Update Error", "Please select your account.")
+            QMessageBox.information(self, "Update Error", "Please select a account.")
             return
         
         account = self.getAccount()
         username = account["username"]
         password = account["password"]
+        
+        if not Controller.checkPassword(password):
+            QMessageBox.information(self, "Sign up fail", """Please enter the password with: 
+At least 6 characters
+At least 1 normal character
+At least 1 capitalized character
+At least 1 number 
+At least 1 special character.""")
+            return
 
         self.acc.update(username, password)
         self.search()

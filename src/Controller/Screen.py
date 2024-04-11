@@ -13,7 +13,7 @@ class Screen(QMainWindow):
         
         self.pdd = Model_ProductDetail()
         
-        self.Product = None
+        self.productID = None
 
         self.button()
     
@@ -36,8 +36,8 @@ class Screen(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProduct(self, product):
-        self.Product = product
+    def setProductID(self, productID):
+        self.productID = productID
     
     def management(self):
         self.general.showProductAdmin()
@@ -89,15 +89,16 @@ class Screen(QMainWindow):
         self.general.page(7)
 
     def getDetail(self):
-        productID = self.product["productID"]
-        MFG = self.ui.MFG.text().strip()
-        scan = self.ui.scan.text().strip()
-        panel = self.ui.panel.text().strip()
-        resolution = self.ui.resolution.text().strip()
-        size = self.ui.size.text().strip()
+        result = self.pdd.search(self.productID)
+
+        MFG = result[0]["MFG"]
+        scan = result[0]["scan"]
+        panel = result[0]["panel"]
+        resolution = result[0]["resolution"]
+        size = result[0]["size"]
 
         detail = {
-            "productID": productID,
+            "productID": self.productID,
             "MFG": MFG,
             "size": size,
             "scan": scan,
@@ -110,7 +111,7 @@ class Screen(QMainWindow):
     def add(self):
         detail = self.getDetail()
         self.pdd.addRAM(detail["productID"], detail["MFG"], detail["scan"], detail["size"], detail["panel"], detail["resolution"])
-        QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
+        QMessageBox.information(self, "Add Confirmation", "productID has been added successfully.")
 
     def update(self):
         detail = self.getDetail()

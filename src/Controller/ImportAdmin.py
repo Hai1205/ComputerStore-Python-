@@ -82,24 +82,27 @@ class ImportAdmin(QMainWindow):
         self.general.page(5)
 
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            importID = self.ui.table.item(self.selectRow, 0).text().strip()
-            employeeID = self.ui.table.item(self.selectRow, 1).text().strip()
-            supplierID = self.ui.table.item(self.selectRow, 2).text().strip()
-            date = self.ui.table.item(self.selectRow, 3).text().strip()
-            totalCost = self.ui.table.item(self.selectRow, 4).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a import.")
+            return
+        
+        self.setEnabled(False)
+        importID = self.ui.table.item(self.selectRow, 0).text().strip()
+        employeeID = self.ui.table.item(self.selectRow, 1).text().strip()
+        supplierID = self.ui.table.item(self.selectRow, 2).text().strip()
+        date = self.ui.table.item(self.selectRow, 3).text().strip()
+        totalCost = self.ui.table.item(self.selectRow, 4).text().strip()
 
-            self.ui.importID.setText(importID)
-            self.ui.employeeID.setText(employeeID)
-            self.ui.supplierID.setText(supplierID)
-            self.ui.date.setDate(QDate.fromString(date, "yyyy-MM-dd"))
-            self.ui.totalCost.setText(totalCost)
+        self.ui.importID.setText(importID)
+        self.ui.employeeID.setText(employeeID)
+        self.ui.supplierID.setText(supplierID)
+        self.ui.date.setDate(QDate.fromString(date, "yyyy-MM-dd"))
+        self.ui.totalCost.setText(totalCost)
 
     def detail(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Error", "Please select your import.")
+            QMessageBox.information(self, "Error", "Please select a import.")
             return
         
         self.general.importDetail(self.getImport())
@@ -165,7 +168,7 @@ class ImportAdmin(QMainWindow):
 
     def delete_2(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Delete Error", "Please select your import.")
+            QMessageBox.information(self, "Delete Error", "Please select a import.")
             return
         confirmRefund = QMessageBox.question(self, "Warning", "Are you sure want to delete?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

@@ -36,10 +36,10 @@ class Model_Supplier:
         finally:
             self.con.close()
     
-    def add(self, supplierID, supplierName):
+    def add(self, supplierID, supplierName, email, address):
         self.open()
-        query = f"""INSERT INTO supplier (supplierID, supplierName)
-                    VALUES ('{supplierID}', '{supplierName}');"""
+        query = f"""INSERT INTO supplier (supplierID, supplierName, email, address)
+                    VALUES ('{supplierID}', '{supplierName}', '{email}', '{address}');"""
 
         try:
             self.cursor.execute(query)
@@ -50,10 +50,10 @@ class Model_Supplier:
         finally:
             self.con.close()
     
-    def update(self, supplierID, supplierName):
+    def update(self, supplierID, supplierName, email, address):
         self.open()
         query = f"""UPDATE supplier 
-                    SET supplierName = '{supplierName}' WHERE supplierID = '{supplierID}';"""
+                    SET supplierName = '{supplierName}', supplierName = '{email}', supplierName = '{address}' WHERE supplierID = '{supplierID}';"""
         
         try:
             self.cursor.execute(query)
@@ -77,7 +77,7 @@ class Model_Supplier:
         finally:
             self.con.close()
 
-    def search(self, supplierID=None, supplierName=None):
+    def search(self, supplierID=None, supplierName=None, email=None, address=None):
         self.open()
 
         condition = ""
@@ -88,6 +88,16 @@ class Model_Supplier:
                 condition += f" and supplierName LIKE '%{supplierName}%'"
             else: 
                 condition += f"supplierName LIKE '%{supplierName}%'"
+        elif email:
+            if condition:
+                condition += f" and email LIKE '%{email}%'"
+            else: 
+                condition += f"email LIKE '%{email}%'"
+        elif address:
+            if condition:
+                condition += f" and address LIKE '%{address}%'"
+            else: 
+                condition += f"address LIKE '%{address}%'"
             
         if condition:
             query = f"SELECT * FROM supplier WHERE {condition};"

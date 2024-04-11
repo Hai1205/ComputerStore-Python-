@@ -13,7 +13,7 @@ class ROM(QMainWindow):
 
         self.pdd = Model_ProductDetail()
         
-        self.Product = None
+        self.productID = None
 
         self.button()
     
@@ -36,8 +36,8 @@ class ROM(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProduct(self, product):
-        self.Product = product
+    def setProductID(self, productID):
+        self.productID = productID
     
     def management(self):
         self.general.showProductAdmin()
@@ -89,15 +89,16 @@ class ROM(QMainWindow):
         self.general.page(7)
 
     def getDetail(self):
-        productID = self.Product["productID"]
-        MFG = self.ui.MFG.text().strip()
-        capacity = self.ui.capacity.text().strip()
-        writeSpeed = self.ui.writeSpeed.text().strip()
-        readSpeed = self.ui.readSpeed.text().strip()
-        type = self.ui.type.text().strip()
+        result = self.pdd.search(self.productID)
+
+        MFG = result[0]["MFG"]
+        capacity = result[0]["capacity"]
+        writeSpeed = result[0]["writeSpeed"]
+        readSpeed = result[0]["readSpeed"]
+        type = result[0]["type"]
 
         detail = {
-            "productID": productID,
+            "productID": self.productID,
             "MFG": MFG,
             "capacity": capacity,
             "writeSpeed": writeSpeed,
@@ -110,7 +111,7 @@ class ROM(QMainWindow):
     def add(self):
         detail = self.getDetail()
         self.pdd.addROM(detail["productID"], detail["MFG"], detail["capacity"], detail["type"], detail["writeSpeed"], detail["readSpeed"])
-        QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
+        QMessageBox.information(self, "Add Confirmation", "productID has been added successfully.")
 
     def update(self):
         detail = self.getDetail()

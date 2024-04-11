@@ -75,46 +75,78 @@ class SupplierAdmin(QMainWindow):
         self.general.page(5)
 
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            supplierID = self.ui.table.item(self.selectRow, 0).text().strip()
-            supplierName = self.ui.table.item(self.selectRow, 1).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a supplier.")
+            return
+        
+        self.setEnabled(False)
+        supplierID = self.ui.table.item(self.selectRow, 0).text().strip()
+        supplierName = self.ui.table.item(self.selectRow, 1).text().strip()
+        email = self.ui.table.item(self.selectRow, 2).text().strip()
+        address = self.ui.table.item(self.selectRow, 3).text().strip()
 
-            self.ui.supplierID.setText(supplierID)
-            self.ui.supplierName.setText(supplierName)
+        self.ui.supplierID.setText(supplierID)
+        self.ui.supplierName.setText(supplierName)
+        self.ui.email.setText(email)
+        self.ui.address.setText(address)
 
     def add(self):
         supplier = self.getSupplier()
-        supplierID = ""
-        if supplierID == "":
-            while True:
-                supplierID = Controller.createSupplierID()
-                if not self.sp.checkExist(supplierID):
-                    break
+        supplierID = supplier["supplierID"]
         supplierName = supplier["supplierName"]
+        email = supplier["email"]
+        address = supplier["address"]
+        while True:
+            supplierID = Controller.createSupplierID()
+            if not self.sp.checkExist(supplierID):
+                break
 
-        self.sp.add(supplierID, supplierName)
+        if supplierID:
+            QMessageBox.information(self, "Add Error", "Infornation cannot be entered SupplierID.")
+            return
+        elif not supplierName:
+            QMessageBox.information(self, "Sign up fail", "ProductID can not be blank.")
+            return
+        elif not email:
+            QMessageBox.information(self, "Sign up fail", "Email can not be blank.")
+            return
+        elif not Controller.checkEmail(email):
+            QMessageBox.information(self, "Add Error", "Please enter the correct email.")
+            return
+        elif not address:
+            QMessageBox.information(self, "Sign up fail", "Address can not be blank.")
+            return
 
-        QMessageBox.information(self, "Add Confirmation", "Customer has been added successfully.")
+        self.sp.add(supplierID, supplierName, email, address)
+
+        QMessageBox.information(self, "Add Confirmation", "Supplier has been added successfully.")
         self.clear()
 
     def update(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Update Error", "Please select your import.")
+            QMessageBox.information(self, "Update Error", "Please select a supplier.")
             return
         
         supplier = self.getSupplier()
         supplierID = supplier["supplierID"]
         supplierName = supplier["supplierName"]
+        email = supplier["email"]
+        address = supplier["address"]
 
-        self.sp.update(supplierID, supplierName)
+        if not Controller.checkEmail(email):
+            QMessageBox.information(self, "Update Error", "Please enter the correct email.")
+            return
+
+        self.sp.update(supplierID, supplierName, email, address)
         self.search()
 
     def search(self):
         supplier = self.getSupplier()
         supplierResult = self.sp.search(supplierID=supplier["supplierID"],
                                     supplierName=supplier["supplierName"],
+                                    email=supplier["email"],
+                                    address=supplier["address"]
         )
         self.showData(supplierResult)
 
@@ -127,6 +159,8 @@ class SupplierAdmin(QMainWindow):
                 infoList = [
                     info["supplierID"],
                     info["supplierName"],
+                    info["email"],
+                    info["address"]
                 ]
 
                 for column, item in enumerate(infoList):
@@ -139,10 +173,14 @@ class SupplierAdmin(QMainWindow):
     def getSupplier(self):
         supplierID = self.ui.supplierID.text().strip()
         supplierName = self.ui.supplierName.text().strip()
+        email = self.ui.email.text().strip()
+        address = self.ui.address.text().strip()
 
         supplier = {
             "supplierID": supplierID,
-            "supplierName": supplierName
+            "supplierName": supplierName,
+            "email": email,
+            "address": address
         }
 
         return supplier
@@ -154,12 +192,14 @@ class SupplierAdmin(QMainWindow):
         self.selectRow = -1
         self.ui.supplierID.clear()
         self.ui.supplierName.clear()
+        self.ui.email.clear()
+        self.ui.address.clear()
         self.search()
         self.setEnabled(True)
 
     def delete_2(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Delete Error", "Please select the supplier.")
+            QMessageBox.information(self, "Delete Error", "Please select a supplier.")
             return
         confirmRefund = QMessageBox.question(self, "Warning", "Are you sure want to delete?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

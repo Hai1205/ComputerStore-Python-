@@ -12,6 +12,7 @@ from Model.Model_ImportDetail import Model_ImportDetail
 from Model.Model_Invoice import Model_Invoice
 from Model.Model_InvoiceDetail import Model_InvoiceDetail
 from Model.Model_Supplier import Model_Supplier
+from Model.Model_Customer import Model_Customer
 
 from Controller.Controller import Controller
 from Controller.SupplierAdmin import SupplierAdmin
@@ -33,6 +34,7 @@ class ProductAdmin(QMainWindow):
         self.ivd = Model_InvoiceDetail()
         self.sp = Model_Supplier()
         self.csp = SupplierAdmin()
+        self.ctm = Model_Customer()
 
         self.button()
         self.updateCombobox()
@@ -45,6 +47,8 @@ class ProductAdmin(QMainWindow):
         self.importID = None
         self.invoiceID = None
         self.totalCost = 0
+        self.prePurchaseDate = None
+        self.preCustomerID = None
     
     def updateCombobox(self):
         self.ui.supplierName.clear()
@@ -119,32 +123,34 @@ class ProductAdmin(QMainWindow):
         self.ui.type.setEnabled(bool)
     
     def select(self):
-        self.setEnabled(False)
         self.selectRow = self.ui.table.currentRow()
-        if self.selectRow != -1:
-            productID = self.ui.table.item(self.selectRow, 0).text().strip()
-            supplierName = self.ui.table.item(self.selectRow, 1).text().strip()
-            productName = self.ui.table.item(self.selectRow, 2).text().strip()
-            type = self.ui.table.item(self.selectRow, 3).text().strip()
-            quantity = self.ui.table.item(self.selectRow, 4).text().strip()
-            warrantyTime = self.ui.table.item(self.selectRow, 5).text().strip()
-            price = self.ui.table.item(self.selectRow, 6).text().strip()
+        if self.selectRow == -1:
+            QMessageBox.information(self, "Select Error", "Please select a product.")
+            return
+        
+        self.setEnabled(False)
+        productID = self.ui.table.item(self.selectRow, 0).text().strip()
+        supplierName = self.ui.table.item(self.selectRow, 1).text().strip()
+        productName = self.ui.table.item(self.selectRow, 2).text().strip()
+        type = self.ui.table.item(self.selectRow, 3).text().strip()
+        quantity = self.ui.table.item(self.selectRow, 4).text().strip()
+        warrantyTime = self.ui.table.item(self.selectRow, 5).text().strip()
+        price = self.ui.table.item(self.selectRow, 6).text().strip()
 
-            self.ui.productID.setText(productID)
-            self.ui.supplierName.setCurrentText(supplierName)
-            self.ui.productName.setText(productName)
-            self.ui.quantity.setText(quantity)
-            self.ui.price.setText(price)
-            self.ui.type.setCurrentText(type)
-            self.ui.warrantyTime.setText(warrantyTime)
+        self.ui.productID.setText(productID)
+        self.ui.supplierName.setCurrentText(supplierName)
+        self.ui.productName.setText(productName)
+        self.ui.quantity.setText(quantity)
+        self.ui.price.setText(price)
+        self.ui.type.setCurrentText(type)
+        self.ui.warrantyTime.setText(warrantyTime)
         
     def detail(self):
         if self.selectRow == -1:
             QMessageBox.information(self, "Error", "Please select the product.")
             return
         
-        self.general.detail(product=self.getProduct())
-        # self.general.page(21)
+        self.general.setProductID(self.getProduct()["productID"])
         product = self.getProduct()
         type = product["type"]
         if type == "Laptop":
@@ -184,34 +190,66 @@ class ProductAdmin(QMainWindow):
         supplierName = product["supplierName"]
         productName = product["productName"]
         type = product["type"]
-        quantity = int(product["quantity"])
-        warrantyTime = int(product["warrantyTime"])
-        price = int(product["price"])
-        cost = quantity * price
+        quantity = product["quantity"]
+        warrantyTime = product["warrantyTime"]
+        price = product["price"]
+        
+        if self.selectRow == -1 and productID:
+            QMessageBox.information(self, "Add Error", "Infornation cannot be entered ProductID.")
+            return
+        elif not supplierName:
+            QMessageBox.information(self, "Add Error", "Supplier name can not be blank.")
+            return
+        elif supplierName == "All":
+            QMessageBox.information(self, "Add Error", "Please choose a different supplier name than All.")
+            return
+        elif not productName:
+            QMessageBox.information(self, "Add Error", "Product name can not be blank.")
+            return
+        elif not type:
+            QMessageBox.information(self, "Add Error", "Type can not be blank.")
+            return
+        elif type == "All":
+            QMessageBox.information(self, "Add Error", "Please choose a different type than All.")
+            return
+        elif not quantity:
+            QMessageBox.information(self, "Add Error", "Quantity can not be blank.")
+            return
+        elif not quantity.isdigit():
+            QMessageBox.warning(self, "Sell Error", "Please enter an integer value for quantity.")
+            return
+        elif not warrantyTime:
+            QMessageBox.information(self, "Add Error", "Warranty time can not be blank.")
+            return
+        elif not warrantyTime.isdigit():
+            QMessageBox.warning(self, "Sell Error", "Please enter an integer value for warranty time.")
+            return
+        elif not price:
+            QMessageBox.information(self, "Add Error", "Price can not be blank.")
+            return
+        elif not price.isdigit():
+            QMessageBox.warning(self, "Sell Error", "Please enter an integer value for price.")
+            return
+        
+        cost = int(quantity) * int(price)
         self.totalCost += cost
-        if productID == "":
+
+        if not productID:
             while True:
                 productID = Controller.createProductID()
                 if not self.pd.checkExist(productID):
                     break
-
-        if supplierName == "All":
-            QMessageBox.information(self, "Import Error", "Please choose a different supplier name than All.")
-            return 
-        if type == "All":
-            QMessageBox.information(self, "Import Error", "Please choose a different type than All.")
-            return
         if not self.ip.checkExist(self.importID):
             self.ip.add(self.importID, self.employeeID, supplierName, self.purchaseDate.date(), self.totalCost)
-        self.ipd.add(self.importID, productID, quantity, price, cost)
+        self.ipd.add(self.importID, productID, int(quantity), int(price), cost)
         self.ip.update(self.importID, self.purchaseDate, self.totalCost)
 
         if self.pd.checkExist(productID):
-            self.pd.increaseQuantity(productID, quantity, price)
+            self.pd.increaseQuantity(productID, int(quantity), int(price))
             QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
         else:
-            self.general.detail(product)
-            self.pd.add(productID, supplierName, productName, type, quantity, warrantyTime, price)
+            self.general.detail(productID)
+            self.pd.add(productID, supplierName, productName, type, int(quantity), int(warrantyTime), int(price))
             
             if type == "Laptop":
                 self.general.page(18)
@@ -227,13 +265,20 @@ class ProductAdmin(QMainWindow):
                 self.general.page(16)
             elif type == "Screen":
                 self.general.page(20)
-
-        self.clear()
+            
+        self.search()
     
     def sell(self):
         if self.selectRow == -1:
             QMessageBox.information(self, "Sell Error", "Please select the product.")
             return
+
+        product = self.getProduct()
+        productID = product["productID"]
+        customerID = product["customerID"]
+        quantity = product["quantity"]
+        warrantyTime = product["warrantyTime"]
+        price = product["price"]
         
         warrantyID = None
         while True:
@@ -243,32 +288,53 @@ class ProductAdmin(QMainWindow):
         if self.employeeID is None:
             employeeID = self.ep.selectRandom()
             self.employeeID = employeeID["employeeID"]
-        if self.invoiceID is None:
+        if self.invoiceID is None or self.preCustomerID != customerID or self.purchaseDate != self.prePurchaseDate:
             while True:
                 self.invoiceID = Controller.createInvoiceID()
                 if not self.iv.checkExist(self.invoiceID):
                     break
+            self.prePurchaseDate = self.purchaseDate
+            self.preCustomerID = customerID
 
-        product = self.getProduct()
-        productID = product["productID"]
-        customerID = product["customerID"]
-        quantity = int(product["quantity"])
-        warrantyTime = int(product["warrantyTime"])
-        price = int(product["price"])
-        cost = quantity * price
-        newDate = self.purchaseDate + timedelta(days=warrantyTime*30+10)
+        if not customerID:
+            QMessageBox.information(self, "Sell Error", "CustomerID can not be blank.")
+            return
+        elif not quantity:
+            QMessageBox.information(self, "Sell Error", "Quantity can not be blank.")
+            return
+        elif not warrantyTime:
+            QMessageBox.information(self, "Sell Error", "Warranty time can not be blank.")
+            return
+        elif not price:
+            QMessageBox.information(self, "Sell Error", "Price time can not be blank.")
+            return
+        elif not self.ctm.checkExist(customerID):
+            QMessageBox.information(self, "Sell Error", "CustomerID is incorrect.")
+            return
+        elif not quantity.isdigit():
+            QMessageBox.warning(self, "Sell Error", "Please enter an integer value for quantity.")
+            return
+        elif not warrantyTime.isdigit():
+            QMessageBox.warning(self, "Sell Error", "Please enter an integer value for warranty time.")
+            return
+        elif not price.isdigit():
+            QMessageBox.warning(self, "Sell Error", "Please enter an integer value for price.")
+            return
+
+        cost = int(quantity) * int(price)
+        newDate = self.purchaseDate + timedelta(days=int(warrantyTime)*30+10)
         EXP = newDate.date()
         self.totalCost += cost
 
         if not self.iv.checkExist(self.invoiceID):
             self.iv.add(self.invoiceID, self.employeeID, customerID, self.purchaseDate.date(), self.totalCost)
-        self.ivd.add(self.invoiceID, productID, warrantyID, quantity, price, cost)
-        self.wrt.add(warrantyID, productID, self.invoiceID, customerID, self.purchaseDate.date(), warrantyTime, EXP)
+        self.ivd.add(self.invoiceID, productID, warrantyID, int(quantity), int(price), cost)
+        self.wrt.add(warrantyID, productID, self.invoiceID, customerID, self.purchaseDate.date(), int(warrantyTime), EXP)
         self.iv.update(self.invoiceID, self.purchaseDate, self.totalCost)
-        self.pd.decreaseQuantity(productID, quantity)
+        self.pd.decreaseQuantity(productID, int(quantity))
 
         QMessageBox.information(self, "Sell Confirmation", "Sell has been placed successfully.")
-        self.clear()
+        self.search()
 
     def update(self):
         if self.selectRow == -1:
@@ -278,10 +344,17 @@ class ProductAdmin(QMainWindow):
         product = self.getProduct()
         productID = product["productID"]
         productName = product["productName"]
-        warrantyTime = int(product["warrantyTime"])
-        price = int(product["price"])
+        warrantyTime = product["warrantyTime"]
+        price = product["price"]
 
-        self.pd.update(productID, productName, warrantyTime, price)
+        if warrantyTime and not warrantyTime.isdigit():
+            QMessageBox.warning(self, "Sell Error", "Please enter an integer value for warranty time.")
+            return
+        elif price and not price.isdigit():
+            QMessageBox.warning(self, "Sell Error", "Please enter an integer value for price.")
+            return
+
+        self.pd.update(productID, productName, int(warrantyTime), int(price))
         self.search()
 
     def search(self):

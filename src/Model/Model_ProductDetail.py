@@ -433,7 +433,7 @@ class Model_ProductDetail:
     def search(self, productID):
         self.open()
 
-        query = f"SELECT * FROM productdetail WHERE productID LIKE '%{productID}%';"
+        query = f"SELECT * FROM productdetail WHERE productID = '{productID}';"
 
         try:
             self.cursor.execute(query)

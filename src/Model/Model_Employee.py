@@ -21,7 +21,7 @@ class Model_Employee:
     
     def selectRandom(self):
         self.open()
-        query = """SELECT employeeID FROM Employee
+        query = """SELECT employeeID FROM Employee WHERE position = 'Sale'
                     ORDER BY RAND()
                     LIMIT 1;"""
         

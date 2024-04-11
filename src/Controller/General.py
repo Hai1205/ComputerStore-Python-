@@ -152,15 +152,17 @@ class General(QMainWindow):
     def page(self, index):
         self.stacked_widget.setCurrentIndex(index)
     
-    def detail(self, product):
+    def setProductID(self, productID):
+        self.Laptop.setProductID(productID)
+        self.RAM.setProductID(productID)
+        self.ROM.setProductID(productID)
+        self.CPU.setProductID(productID)
+        self.VGA.setProductID(productID)
+        self.Keyboard.setProductID(productID)
+        self.Screen.setProductID(productID)
+    
+    def detailUser(self, product):
         self.ProductDetail.setProduct(product)
-        self.Laptop.setProduct(product)
-        self.RAM.setProduct(product)
-        self.ROM.setProduct(product)
-        self.CPU.setProduct(product)
-        self.VGA.setProduct(product)
-        self.Keyboard.setProduct(product)
-        self.Screen.setProduct(product)
         self.showProductDetail()
 
     def importDetail(self, Import):

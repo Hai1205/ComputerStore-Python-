@@ -47,11 +47,25 @@ class SignUp(QMainWindow):
 Space
 Special characters.""")
             return
+        elif self.acc.checkExist(username):
+            QMessageBox.information(self, "Sign up fail", "Username already exists")
+            return
         elif not password:
             QMessageBox.information(self, "Sign up fail", "Password can not be blank.")
             return
+        elif not Controller.checkPassword(password):
+            QMessageBox.information(self, "Sign up fail", """Please enter the password with: 
+At least 6 characters
+At least 1 normal character
+At least 1 capitalized character
+At least 1 number 
+At least 1 special character.""")
+            return
         elif not rePassword:
             QMessageBox.information(self, "Sign up fail", "RePassword can not be blank.")
+            return
+        elif password != rePassword:
+            QMessageBox.information(self, "Sign up fail", "Password and Repassword do not match.")
             return
         elif not firstname:
             QMessageBox.information(self, "Sign up fail", "Firstname can not be blank.")
@@ -64,20 +78,6 @@ Special characters.""")
             return
         elif not phone:
             QMessageBox.information(self, "Sign up fail", "Phone can not be blank.")
-            return
-        elif not Controller.checkPassword(password):
-            QMessageBox.information(self, "Sign up fail", """Please enter the password with: 
-At least 6 characters
-At least 1 normal character
-At least 1 capitalized character
-At least 1 number 
-At least 1 special character.""")
-            return
-        elif password != rePassword:
-            QMessageBox.information(self, "Sign up fail", "Password and Repassword do not match.")
-            return
-        elif self.acc.checkExist(username):
-            QMessageBox.information(self, "Sign up fail", "Username already exists")
             return
         elif not Controller.checkPhone(phone):
             QMessageBox.information(self, "Sign up fail", "Please enter the correct phone number format.")

@@ -13,7 +13,7 @@ class RAM(QMainWindow):
         
         self.pdd = Model_ProductDetail()
         
-        self.Product = None
+        self.productID = None
 
         self.button()
     
@@ -36,8 +36,8 @@ class RAM(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProduct(self, product):
-        self.Product = product
+    def setProductID(self, productID):
+        self.productID = productID
     
     def management(self):
         self.general.showProductAdmin()
@@ -89,16 +89,17 @@ class RAM(QMainWindow):
         self.general.page(7)
     
     def getDetail(self):
-        productID = self.Product["productID"]
-        MFG = self.ui.MFG.text().strip()
-        capacity = self.ui.capacity.text().strip()
-        SPDspeed = self.ui.SPDspeed.text().strip()
-        CL = self.ui.CL.text().strip()
-        size = self.ui.size.text().strip()
-        type = self.ui.type.text().strip()
+        result = self.pdd.search(self.productID)
+
+        MFG = result[0]["MFG"]
+        capacity = result[0]["capacity"]
+        SPDspeed = result[0]["SPDspeed"]
+        CL = result[0]["CL"]
+        size = result[0]["size"]
+        type = result[0]["type"]
 
         detail = {
-            "productID": productID,
+            "productID": self.productID,
             "MFG": MFG,
             "size": size,
             "capacity": capacity,
@@ -112,7 +113,7 @@ class RAM(QMainWindow):
     def add(self):
         detail = self.getDetail()
         self.pdd.addRAM(detail["productID"], detail["MFG"], detail["capacity"], detail["type"], detail["SPDspeed"], detail["CL"], detail["size"])
-        QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
+        QMessageBox.information(self, "Add Confirmation", "productID has been added successfully.")
 
     def update(self):
         detail = self.getDetail()
