@@ -1,7 +1,8 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QGridLayout, QScrollArea, QSizePolicy, QFrame, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QGridLayout, QScrollArea, QPushButton, QFrame
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import Qt
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -20,6 +21,9 @@ class Ui_MainWindow(object):
         self.widget.setGeometry(QtCore.QRect(0, 0, 721, 311))
         self.widget.setObjectName("widget")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.select = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.select.setGeometry(QtCore.QRect(70, 160, 93, 28))
+        self.select.setObjectName("select")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
@@ -35,47 +39,51 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.select.setText(_translate("MainWindow", "select"))
+
 
 class ProductWidget(QWidget):
-    def __init__(self, name, image_path, information):
+    def __init__(self, index, name, image_path, information):
         super().__init__()
+        self.index = index
         self.name = name
         self.image_path = image_path
         self.information = information
         self.setupUi()
 
     def setupUi(self):
-        # Create layout for the product widget
+        # Tạo layout cho widget sản phẩm
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins to ensure no extra padding
-        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  # Set left alignment
+        layout.setContentsMargins(0, 0, 0, 0)  
+        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  
 
-        # Create frame for the product
+        # Tạo frame cho sản phẩm
         frame = QFrame()
-        frame.setFrameShape(QFrame.Shape.Box)  # Set frame shape
-        frame.setLineWidth(2)  # Set border width
+        frame.setFrameShape(QFrame.Shape.Box) 
+        frame.setLineWidth(2)  
 
         frame_layout = QVBoxLayout(frame)
-        frame_layout.setContentsMargins(10, 10, 10, 10)  # Add margins to frame layout
-        frame_layout.setSpacing(10)  # Set spacing between widgets inside frame
+        frame_layout.setContentsMargins(10, 10, 10, 10)  
+        frame_layout.setSpacing(10)  
 
-        layout.addWidget(frame)  # Add product to the layout
+        layout.addWidget(frame)  
 
-        # Display image
+        # Hiển thị hình ảnh
         label_image = QLabel()
         pixmap = QPixmap(self.image_path)
-        label_image.setPixmap(pixmap.scaled(150, 150))  # Resize image
+        label_image.setPixmap(pixmap.scaled(150, 150))  
         frame_layout.addWidget(label_image, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-        # Display information
+        # Hiển thị thông tin
         label_info = QLabel(self.information)
         frame_layout.addWidget(label_info, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-        # Connect mousePressEvent() to handle click event
+        # Kết nối sự kiện nhấp chuột để xử lý
         frame.mousePressEvent = self.on_clicked
 
     def on_clicked(self, event):
-        QMessageBox.information(self, "Product Clicked", f"You clicked on {self.name}. Information: {self.information}")
+        parent_widget = self.parentWidget().parentWidget()  # Lấy đối tượng MainWindow từ ProductWidget
+        parent_widget.on_select_clicked(self.index)
 
 
 class MainWindow(QMainWindow):
@@ -85,78 +93,47 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.loadProducts()
+        self.ui.select.clicked.connect(self.on_select_clicked)
+    
+    def on_select_clicked(self, index):
+        print(f"Selected product index: {index}")
 
     def loadProducts(self):
         name = "LO"
         info = f"""
 Supplier name: Asus
-Prodcuct name: {name}
-Type: laptop
+Product name: {name}
+Type: Laptop
 Quantity: 10
 Warranty time: 24
 Price: 500"""
         products = [
-{"name": "111111111112", "image_path": "../ComputerStore/src/test/R.jpg", "information": f"{info}"},
-{"name": "111111111113", "image_path": "../ComputerStore/src/test/R.jpg", "information": """
+            {"name": "111111111112", "image_path": "../ComputerStore/src/test/R.jpg", "information": f"{info}"},
+            {"name": "111111111113", "image_path": "../ComputerStore/src/test/R.jpg", "information": """
 Supplier name: Asus
-Prodcuct name: LOL
-Type: laptop
+Product name: LOL
+Type: Laptop
 Quantity: 10
 Warranty time: 24
-Price: 500"""},
-{"name": "111111111114", "image_path": "../ComputerStore/src/test/R.jpg", "information": """
-Supplier name: Asus
-Prodcuct name: LOL
-Type: laptop
-Quantity: 10
-Warranty time: 24
-Price: 500"""},
-{"name": "111111111115", "image_path": "../ComputerStore/src/test/R.jpg", "information": """
-Supplier name: Asus
-Prodcuct name: LOL
-Type: laptop
-Quantity: 10
-Warranty time: 24
-Price: 500"""},
-{"name": "111111111116", "image_path": "../ComputerStore/src/test/R.jpg", "information": """
-Supplier name: Asus
-Prodcuct name: LOL
-Type: laptop
-Quantity: 10
-Warranty time: 24
-Price: 500"""},
-{"name": "111111111117", "image_path": "../ComputerStore/src/test/R.jpg", "information": """
-Supplier name: Asus
-Prodcuct name: LOL
-Type: laptop
-Quantity: 10
-Warranty time: 24
-Price: 500"""},
-
+Price: 500"""}
             # Add more products as needed...
         ]
 
-        grid_layout = QGridLayout()  # Create a QGridLayout to hold the products
-        grid_layout.setHorizontalSpacing(50)  # Set spacing between columns
-        grid_layout.setVerticalSpacing(50)  # Set spacing between rows
+        grid_layout = QGridLayout()  
+        grid_layout.setHorizontalSpacing(50) 
+        grid_layout.setVerticalSpacing(50) 
         self.ui.scrollAreaWidgetContents.setLayout(grid_layout)
 
-        row, column = 0, 0
-        for product in products:
+        for index, product in enumerate(products):
             name = product["name"]
             image_path = product["image_path"]
             information = product["information"]
 
-            # Create a ProductWidget for each product
-            product_widget = ProductWidget(name, image_path, information)
-
-            # Add the ProductWidget to the grid layout
+            product_widget = ProductWidget(index, name, image_path, information)
+            row = index // 3
+            column = index % 3
             grid_layout.addWidget(product_widget, row, column)
 
-            column += 1
-            if column == 3:
-                column = 0
-                row += 1
 
 if __name__ == "__main__":
     import sys

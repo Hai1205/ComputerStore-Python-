@@ -14,6 +14,7 @@ class Keyboard(QMainWindow):
         self.pdd = Model_ProductDetail()
         
         self.productID = None
+        self.productName = None
 
         self.button()
     
@@ -36,14 +37,16 @@ class Keyboard(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProductID(self, productID):
+    def setProductID(self, productID, productName):
         self.productID = productID
+        self.productName = productName
     
     def management(self):
         self.general.showProductAdmin()
         self.general.page(7)
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):
@@ -95,20 +98,16 @@ class Keyboard(QMainWindow):
         layout = result[0]["layout"]
         LED = result[0]["LED"]
         keycap = result[0]["keycap"]
-        size = result[0]["size"]
         switch = result[0]["switch"]
-        pin = result[0]["pin"]
         hotswap = result[0]["hotswap"]
 
         detail = {
             "productID": self.productID,
             "MFG": MFG,
-            "size": size,
             "layout": layout,
             "LED": LED,
             "keycap": keycap,
             "switch": switch,
-            "pin": pin,
             "hotswap": hotswap
         }
 
@@ -126,20 +125,18 @@ class Keyboard(QMainWindow):
     def clear(self):
         self.ui.MFG.clear()
         self.ui.layout.clear()
-        self.ui.size_2.clear()
         self.ui.LED.clear()
         self.ui.keycap.clear()
         self.ui.switch_2.clear()
-        self.ui.pin.clear()
         self.ui.hotswap.currentIndex(0)
     
     def showData(self):
         detail = self.getDetail()
         self.ui.MFG.setText(detail["MFG"])
         self.ui.layout.setText(detail["layout"])
-        self.ui.size_2.setText(detail["size_2"])
         self.ui.LED.setText(detail["LED"])
         self.ui.keycap.setText(detail["keycap"])
-        self.ui.switch_2.setText(detail["switch_2"])
-        self.ui.pin.setText(detail["pin"])
+        self.ui.switch_2.setText(detail["switch"])
         self.ui.hotswap.setCurrentText(detail["hotswap"])
+
+        self.ui.productName.setText(self.productName)

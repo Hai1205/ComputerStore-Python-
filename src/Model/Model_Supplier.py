@@ -19,9 +19,18 @@ class Model_Supplier:
 
         self.cursor = self.con.cursor(dictionary=True)
     
-    def checkExist(self, supplierID):
+    def checkExist(self, supplierID, supplierName):
         self.open()
-        query = f"""SELECT supplierID FROM supplier WHERE supplierID LIKE '{supplierID}';"""
+        condition = ""
+        if supplierID:
+            condition += f"supplierID LIKE '{supplierID}'"
+        elif supplierName:
+            if condition:
+                condition += f" OR supplierName LIKE '{supplierName}'"
+            else: 
+                condition += f"supplierName LIKE '{supplierName}'"
+                
+        query = f"""SELECT supplierID FROM supplier WHERE {condition};"""
 
         try:
             self.cursor.execute(query)

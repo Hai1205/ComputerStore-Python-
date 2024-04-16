@@ -63,10 +63,23 @@ class Model_ImportDetail:
         finally:
             self.con.close()
         
-    def search(self, importID):
+    def search(self, importID=None, productID=None):
         self.open()
 
-        query = f"SELECT * FROM importdetail WHERE importID = '{importID}';"
+        condition = ""
+        if importID:
+            condition += f"importID LIKE '%{importID}%'"
+        else:
+            if productID:
+                if condition:
+                    condition += f" and productID LIKE '%{productID}%'"
+                else: 
+                    condition += f"productID LIKE '%{productID}%'"
+        
+        if condition:
+            query = f"SELECT * FROM importdetail WHERE {condition};"
+        else:
+            query = f"SELECT * FROM importdetail;"
 
         try:
             self.cursor.execute(query)

@@ -40,6 +40,7 @@ class AccountAdmin(QMainWindow):
 
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):

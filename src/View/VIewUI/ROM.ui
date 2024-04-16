@@ -34,7 +34,7 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="productName">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -49,7 +49,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Product detail - Read-only memory(ROM)</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -60,7 +60,7 @@
       <rect>
        <x>0</x>
        <y>70</y>
-       <width>511</width>
+       <width>591</width>
        <height>451</height>
       </rect>
      </property>
@@ -74,7 +74,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Capacity</string>
+         <string>Capacity:</string>
         </property>
        </widget>
       </item>
@@ -84,7 +84,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Manufacturing date</string>
+         <string>Manufacturing date:</string>
         </property>
        </widget>
       </item>
@@ -94,14 +94,14 @@
       <item row="5" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Read speed</string>
+         <string>Read speed:</string>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Write speed</string>
+         <string>Write speed:</string>
         </property>
        </widget>
       </item>
@@ -117,7 +117,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Type</string>
+         <string>Type:</string>
         </property>
        </widget>
       </item>

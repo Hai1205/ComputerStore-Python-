@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '.\ROM.ui'
+# Form implementation generated from reading ui file 'ROM.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -23,15 +23,16 @@ class Ui_ROM(object):
         self.frame_2.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_2.setObjectName("frame_2")
-        self.label = QtWidgets.QLabel(parent=self.frame_2)
-        self.label.setGeometry(QtCore.QRect(0, 0, 941, 41))
+        self.productName = QtWidgets.QLabel(parent=self.frame_2)
+        self.productName.setGeometry(QtCore.QRect(0, 0, 941, 41))
         font = QtGui.QFont()
         font.setPointSize(15)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label.setObjectName("label")
+        self.productName.setFont(font)
+        self.productName.setText("")
+        self.productName.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.productName.setObjectName("productName")
         self.frame = QtWidgets.QFrame(parent=self.frame_2)
-        self.frame.setGeometry(QtCore.QRect(0, 70, 511, 451))
+        self.frame.setGeometry(QtCore.QRect(0, 70, 591, 451))
         self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame.setObjectName("frame")
@@ -149,12 +150,11 @@ class Ui_ROM(object):
     def retranslateUi(self, ROM):
         _translate = QtCore.QCoreApplication.translate
         ROM.setWindowTitle(_translate("ROM", "MainWindow"))
-        self.label.setText(_translate("ROM", "Product detail - Read-only memory(ROM)"))
-        self.label_4.setText(_translate("ROM", "Capacity"))
-        self.label_2.setText(_translate("ROM", "Manufacturing date"))
-        self.label_6.setText(_translate("ROM", "Read speed"))
-        self.label_3.setText(_translate("ROM", "Write speed"))
-        self.label_5.setText(_translate("ROM", "Type"))
+        self.label_4.setText(_translate("ROM", "Capacity:"))
+        self.label_2.setText(_translate("ROM", "Manufacturing date:"))
+        self.label_6.setText(_translate("ROM", "Read speed:"))
+        self.label_3.setText(_translate("ROM", "Write speed:"))
+        self.label_5.setText(_translate("ROM", "Type:"))
         self.update.setText(_translate("ROM", "Update"))
         self.back.setText(_translate("ROM", "Back"))
         self.add.setText(_translate("ROM", "Add"))

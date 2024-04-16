@@ -14,6 +14,7 @@ class CPU(QMainWindow):
         self.pdd = Model_ProductDetail()
         
         self.productID = None
+        self.productName = None
 
         self.button()
     
@@ -36,14 +37,16 @@ class CPU(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProductID(self, productID):
+    def setProductID(self, productID, productName):
         self.productID = productID
+        self.productName = productName
     
     def management(self):
         self.general.showProductAdmin()
         self.general.page(7)
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):
@@ -92,9 +95,9 @@ class CPU(QMainWindow):
         result = self.pdd.search(self.productID)
 
         MFG = result[0]["MFG"]
-        cores = result[0]["cores"]
+        cores = str(result[0]["cores"])
         series = result[0]["series"]
-        threads = result[0]["threads"]
+        threads = str(result[0]["threads"])
 
         detail = {
             "productID": self.productID,
@@ -127,3 +130,5 @@ class CPU(QMainWindow):
         self.ui.cores.setText(detail["cores"])
         self.ui.threads.setText(detail["threads"])
         self.ui.series.setText(detail["series"])
+
+        self.ui.productName.setText(self.productName)

@@ -146,3 +146,19 @@ class Model_Invoice:
             print(e)
         finally:
             self.con.close()
+
+    def getYearsAndTotal(self):
+        self.open()
+        
+        query = """SELECT YEAR(date) as year, SUM(totalCost) as total
+                    FROM invoice
+                    GROUP BY YEAR(date);"""
+
+        try:
+            self.cursor.execute(query)
+            result = self.cursor.fetchall()
+            return result
+        except Exception as e:
+            print(e)
+        finally:
+            self.con.close()

@@ -14,6 +14,7 @@ class ROM(QMainWindow):
         self.pdd = Model_ProductDetail()
         
         self.productID = None
+        self.productName = None
 
         self.button()
     
@@ -36,14 +37,16 @@ class ROM(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProductID(self, productID):
+    def setProductID(self, productID, productName):
         self.productID = productID
+        self.productName = productName
     
     def management(self):
         self.general.showProductAdmin()
         self.general.page(7)
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):
@@ -131,3 +134,5 @@ class ROM(QMainWindow):
         self.ui.type.setText(detail["type"])
         self.ui.writeSpeed.setText(detail["writeSpeed"])
         self.ui.readSpeed.setText(detail["readSpeed"])
+
+        self.ui.productName.setText(self.productName)

@@ -19,9 +19,9 @@ class Model_Employee:
 
         self.cursor = self.con.cursor(dictionary=True)
     
-    def selectRandom(self):
+    def selectRandom(self, position):
         self.open()
-        query = """SELECT employeeID FROM Employee WHERE position = 'Sale'
+        query = f"""SELECT employeeID FROM Employee WHERE position = '{position}'
                     ORDER BY RAND()
                     LIMIT 1;"""
         

@@ -45,6 +45,7 @@ class ImportAdmin(QMainWindow):
         self.ui.importID.setEnabled(bool)
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):

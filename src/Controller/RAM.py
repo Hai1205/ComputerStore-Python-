@@ -14,6 +14,7 @@ class RAM(QMainWindow):
         self.pdd = Model_ProductDetail()
         
         self.productID = None
+        self.productName = None
 
         self.button()
     
@@ -36,14 +37,16 @@ class RAM(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProductID(self, productID):
+    def setProductID(self, productID, productName):
         self.productID = productID
+        self.productName = productName
     
     def management(self):
         self.general.showProductAdmin()
         self.general.page(7)
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):
@@ -95,13 +98,11 @@ class RAM(QMainWindow):
         capacity = result[0]["capacity"]
         SPDspeed = result[0]["SPDspeed"]
         CL = result[0]["CL"]
-        size = result[0]["size"]
         type = result[0]["type"]
 
         detail = {
             "productID": self.productID,
             "MFG": MFG,
-            "size": size,
             "capacity": capacity,
             "SPDspeed": SPDspeed,
             "CL": CL,
@@ -125,7 +126,6 @@ class RAM(QMainWindow):
         self.ui.type.clear()
         self.ui.SPDspeed.clear()
         self.ui.CL.clear()
-        self.ui.size.clear()
     
     def showData(self):
         detail = self.getDetail()
@@ -134,4 +134,5 @@ class RAM(QMainWindow):
         self.ui.type.setText(detail["type"])
         self.ui.SPDspeed.setText(detail["SPDspeed"])
         self.ui.CL.setText(detail["CL"])
-        self.ui.size.setText(detail["size"])
+
+        self.ui.productName.setText(self.productName)

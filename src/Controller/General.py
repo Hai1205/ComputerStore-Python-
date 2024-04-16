@@ -152,14 +152,14 @@ class General(QMainWindow):
     def page(self, index):
         self.stacked_widget.setCurrentIndex(index)
     
-    def setProductID(self, productID):
-        self.Laptop.setProductID(productID)
-        self.RAM.setProductID(productID)
-        self.ROM.setProductID(productID)
-        self.CPU.setProductID(productID)
-        self.VGA.setProductID(productID)
-        self.Keyboard.setProductID(productID)
-        self.Screen.setProductID(productID)
+    def setProductID(self, productID, productName):
+        self.Laptop.setProductID(productID, productName)
+        self.RAM.setProductID(productID, productName)
+        self.ROM.setProductID(productID, productName)
+        self.CPU.setProductID(productID, productName)
+        self.VGA.setProductID(productID, productName)
+        self.Keyboard.setProductID(productID, productName)
+        self.Screen.setProductID(productID, productName)
     
     def detailUser(self, product):
         self.ProductDetail.setProduct(product)
@@ -244,3 +244,23 @@ class General(QMainWindow):
     
     def showImportDetail(self):
         self.ImportDetail.showData()
+    
+    def showSalesByYears(self):
+        self.SalesByYears.salesByYears()
+    
+    def showSalesByEmployees(self):
+        self.SalesByEmployees.salesByEmployees()
+
+    def showsalesByProducts(self):
+        self.SalesByProducts.salesByProducts()
+    
+    def showSpendsByYears(self):
+        self.SpendsByYears.spendsByYears()
+    
+    def showSpendsBySuppliers(self):
+        self.SpendsBySuppliers.spendsBySuppliers()
+    
+    def showSpendsByProducts(self):
+        self.SpendsByProducts.spendsByProducts()
+    
+

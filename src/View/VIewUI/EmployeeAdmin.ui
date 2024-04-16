@@ -209,7 +209,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Firstname</string>
+         <string>Firstname:</string>
         </property>
        </widget>
       </item>
@@ -219,14 +219,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>EmployeeID</string>
+         <string>EmployeeID:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Lastname</string>
+         <string>Lastname:</string>
         </property>
        </widget>
       </item>
@@ -254,7 +254,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Date of birth</string>
+         <string>Date of birth:</string>
         </property>
        </widget>
       </item>
@@ -264,14 +264,14 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Salary</string>
+         <string>Salary:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Position</string>
+         <string>Position:</string>
         </property>
        </widget>
       </item>

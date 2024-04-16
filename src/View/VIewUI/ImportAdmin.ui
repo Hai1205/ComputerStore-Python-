@@ -195,7 +195,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>EmployeeID</string>
+         <string>EmployeeID:</string>
         </property>
        </widget>
       </item>
@@ -205,14 +205,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>ImportID</string>
+         <string>ImportID:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>SupplierID</string>
+         <string>SupplierID:</string>
         </property>
        </widget>
       </item>
@@ -240,14 +240,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Date</string>
+         <string>Date:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Total cost</string>
+         <string>Total cost:</string>
         </property>
        </widget>
       </item>

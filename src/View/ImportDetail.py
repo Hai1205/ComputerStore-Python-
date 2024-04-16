@@ -145,7 +145,7 @@ class Ui_ImportDetail(object):
         self.label_2.setText(_translate("ImportDetail", "ImportID:"))
         self.label_4.setText(_translate("ImportDetail", "Purchase date:"))
         self.label_3.setText(_translate("ImportDetail", "EmployeeID:"))
-        self.label_5.setText(_translate("ImportDetail", "SupplierID"))
+        self.label_5.setText(_translate("ImportDetail", "SupplierID:"))
         item = self.table.horizontalHeaderItem(0)
         item.setText(_translate("ImportDetail", "ProductID"))
         item = self.table.horizontalHeaderItem(1)

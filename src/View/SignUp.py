@@ -108,13 +108,13 @@ class Ui_SignUp(object):
         self.signIn.setText(_translate("SignUp", "Sign in"))
         self.signUp.setText(_translate("SignUp", "Sign up"))
         self.label.setText(_translate("SignUp", "Sign up"))
-        self.label_2.setText(_translate("SignUp", "Username"))
-        self.label_3.setText(_translate("SignUp", "Password"))
-        self.label_4.setText(_translate("SignUp", "RePassword"))
-        self.label_5.setText(_translate("SignUp", "Firstname"))
-        self.label_6.setText(_translate("SignUp", "Lastname"))
-        self.label_7.setText(_translate("SignUp", "Address"))
-        self.label_8.setText(_translate("SignUp", "Phone"))
+        self.label_2.setText(_translate("SignUp", "Username:"))
+        self.label_3.setText(_translate("SignUp", "Password:"))
+        self.label_4.setText(_translate("SignUp", "RePassword:"))
+        self.label_5.setText(_translate("SignUp", "Firstname:"))
+        self.label_6.setText(_translate("SignUp", "Lastname:"))
+        self.label_7.setText(_translate("SignUp", "Address:"))
+        self.label_8.setText(_translate("SignUp", "Phone:"))
 
 
 if __name__ == "__main__":

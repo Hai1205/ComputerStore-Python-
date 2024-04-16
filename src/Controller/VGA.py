@@ -14,6 +14,7 @@ class VGA(QMainWindow):
         self.pdd = Model_ProductDetail()
         
         self.productID = None
+        self.productName = None
 
         self.button()
     
@@ -36,14 +37,16 @@ class VGA(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProductID(self, productID):
+    def setProductID(self, productID, productName):
         self.productID = productID
+        self.productName = productName
     
     def management(self):
         self.general.showProductAdmin()
         self.general.page(7)
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):
@@ -92,7 +95,7 @@ class VGA(QMainWindow):
         result = self.pdd.search(self.productID)
 
         MFG = result[0]["MFG"]
-        cores = result[0]["cores"]
+        cores = str(result[0]["cores"])
         size = result[0]["size"]
         GPUclock = result[0]["GPUclock"]
 
@@ -127,3 +130,5 @@ class VGA(QMainWindow):
         self.ui.cores.setText(detail["cores"])
         self.ui.GPUclock.setText(detail["GPUclock"])
         self.ui.size.setText(detail["size"])
+
+        self.ui.productName.setText(self.productName)

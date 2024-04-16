@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '.\Screen.ui'
+# Form implementation generated from reading ui file 'Screen.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -23,15 +23,16 @@ class Ui_Screen(object):
         self.frame_2.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_2.setObjectName("frame_2")
-        self.label = QtWidgets.QLabel(parent=self.frame_2)
-        self.label.setGeometry(QtCore.QRect(0, 0, 941, 41))
+        self.productName = QtWidgets.QLabel(parent=self.frame_2)
+        self.productName.setGeometry(QtCore.QRect(0, 0, 941, 41))
         font = QtGui.QFont()
         font.setPointSize(15)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label.setObjectName("label")
+        self.productName.setFont(font)
+        self.productName.setText("")
+        self.productName.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.productName.setObjectName("productName")
         self.frame = QtWidgets.QFrame(parent=self.frame_2)
-        self.frame.setGeometry(QtCore.QRect(0, 70, 511, 451))
+        self.frame.setGeometry(QtCore.QRect(0, 70, 581, 451))
         self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame.setObjectName("frame")
@@ -149,12 +150,11 @@ class Ui_Screen(object):
     def retranslateUi(self, Screen):
         _translate = QtCore.QCoreApplication.translate
         Screen.setWindowTitle(_translate("Screen", "MainWindow"))
-        self.label.setText(_translate("Screen", "Product detail - Screen"))
-        self.label_4.setText(_translate("Screen", "Scan"))
-        self.label_2.setText(_translate("Screen", "Manufacturing date"))
-        self.label_6.setText(_translate("Screen", "Resolution"))
-        self.label_3.setText(_translate("Screen", "Panel"))
-        self.label_5.setText(_translate("Screen", "Size"))
+        self.label_4.setText(_translate("Screen", "Scan:"))
+        self.label_2.setText(_translate("Screen", "Manufacturing date:"))
+        self.label_6.setText(_translate("Screen", "Resolution:"))
+        self.label_3.setText(_translate("Screen", "Panel:"))
+        self.label_5.setText(_translate("Screen", "Size:"))
         self.update.setText(_translate("Screen", "Update"))
         self.back.setText(_translate("Screen", "Back"))
         self.add.setText(_translate("Screen", "Add"))

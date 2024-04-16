@@ -51,8 +51,9 @@ class WarrantyAdmin(QMainWindow):
         self.customerID = customerID
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
-
+        
     def signOut(self):
         confirmSignout = QMessageBox.question(self, "Sign out", "Are you sure want to sign out?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

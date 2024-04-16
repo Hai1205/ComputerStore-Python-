@@ -115,10 +115,10 @@ class Ui_ProductDetail(object):
         _translate = QtCore.QCoreApplication.translate
         ProductDetail.setWindowTitle(_translate("ProductDetail", "MainWindow"))
         self.label.setText(_translate("ProductDetail", "Product detail"))
-        self.label_8.setText(_translate("ProductDetail", "Supplier name"))
+        self.label_8.setText(_translate("ProductDetail", "Supplier name:"))
         self.label_4.setText(_translate("ProductDetail", "Quantity:"))
         self.label_3.setText(_translate("ProductDetail", "Type:"))
-        self.label_6.setText(_translate("ProductDetail", "Warranty time"))
+        self.label_6.setText(_translate("ProductDetail", "Warranty time:"))
         self.label_7.setText(_translate("ProductDetail", "Price:"))
         self.label_2.setText(_translate("ProductDetail", "ProductID:"))
         self.label_5.setText(_translate("ProductDetail", "Product name:"))

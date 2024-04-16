@@ -43,6 +43,7 @@ class InvoiceAdmin(QMainWindow):
         self.ui.invoiceID.setEnabled(bool)
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):
@@ -180,3 +181,7 @@ class InvoiceAdmin(QMainWindow):
             self.ivd.delete(invoiceID)
         QMessageBox.information(self, "Delete Confirmation", "Invoice has been deleted successfully.")
         self.clear()
+
+    
+    def getYearsOfInvoice(self):
+        return self.iv.getYearsAndTotal()

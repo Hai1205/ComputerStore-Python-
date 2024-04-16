@@ -81,8 +81,8 @@ class Ui_SignIn(object):
         _translate = QtCore.QCoreApplication.translate
         SignIn.setWindowTitle(_translate("SignIn", "MainWindow"))
         self.label.setText(_translate("SignIn", "Sign in"))
-        self.label_3.setText(_translate("SignIn", "Password"))
-        self.label_2.setText(_translate("SignIn", "Username"))
+        self.label_3.setText(_translate("SignIn", "Password:"))
+        self.label_2.setText(_translate("SignIn", "Username:"))
         self.signIn.setText(_translate("SignIn", "Sign in"))
         self.signUp.setText(_translate("SignIn", "Sign up"))
 

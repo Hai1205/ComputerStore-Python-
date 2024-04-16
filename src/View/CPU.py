@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file '.\CPU.ui'
+# Form implementation generated from reading ui file 'CPU.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_CPU(object):
     def setupUi(self, CPU):
         CPU.setObjectName("CPU")
-        CPU.resize(1163, 768)
+        CPU.resize(1163, 772)
         font = QtGui.QFont()
         font.setPointSize(13)
         CPU.setFont(font)
@@ -23,15 +23,16 @@ class Ui_CPU(object):
         self.frame_2.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame_2.setObjectName("frame_2")
-        self.label = QtWidgets.QLabel(parent=self.frame_2)
-        self.label.setGeometry(QtCore.QRect(0, 0, 941, 41))
+        self.productName = QtWidgets.QLabel(parent=self.frame_2)
+        self.productName.setGeometry(QtCore.QRect(0, 0, 941, 41))
         font = QtGui.QFont()
         font.setPointSize(15)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label.setObjectName("label")
+        self.productName.setFont(font)
+        self.productName.setText("")
+        self.productName.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.productName.setObjectName("productName")
         self.frame = QtWidgets.QFrame(parent=self.frame_2)
-        self.frame.setGeometry(QtCore.QRect(0, 70, 511, 451))
+        self.frame.setGeometry(QtCore.QRect(0, 70, 591, 451))
         self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frame.setObjectName("frame")
@@ -143,11 +144,10 @@ class Ui_CPU(object):
     def retranslateUi(self, CPU):
         _translate = QtCore.QCoreApplication.translate
         CPU.setWindowTitle(_translate("CPU", "MainWindow"))
-        self.label.setText(_translate("CPU", "Product detail - Central Processing Unit(CPU)"))
-        self.label_2.setText(_translate("CPU", "Manufacturing date"))
-        self.label_3.setText(_translate("CPU", "Series"))
-        self.label_5.setText(_translate("CPU", "Threads"))
-        self.label_4.setText(_translate("CPU", "Cores"))
+        self.label_2.setText(_translate("CPU", "Manufacturing date:"))
+        self.label_3.setText(_translate("CPU", "Series:"))
+        self.label_5.setText(_translate("CPU", "Threads:"))
+        self.label_4.setText(_translate("CPU", "Cores:"))
         self.update.setText(_translate("CPU", "Update"))
         self.back.setText(_translate("CPU", "Back"))
         self.add.setText(_translate("CPU", "Add"))

@@ -38,8 +38,9 @@ class SupplierAdmin(QMainWindow):
 
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
-
+        
     def signOut(self):
         confirmSignout = QMessageBox.question(self, "Sign out", "Are you sure want to sign out?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
@@ -97,16 +98,15 @@ class SupplierAdmin(QMainWindow):
         supplierName = supplier["supplierName"]
         email = supplier["email"]
         address = supplier["address"]
-        while True:
-            supplierID = Controller.createSupplierID()
-            if not self.sp.checkExist(supplierID):
-                break
 
         if supplierID:
             QMessageBox.information(self, "Add Error", "Infornation cannot be entered SupplierID.")
             return
         elif not supplierName:
             QMessageBox.information(self, "Sign up fail", "ProductID can not be blank.")
+            return
+        elif self.sp.checkExist(supplierName=supplierName):
+            QMessageBox.information(self, "Sign up fail", "Supplier name already exists.")
             return
         elif not email:
             QMessageBox.information(self, "Sign up fail", "Email can not be blank.")
@@ -117,6 +117,11 @@ class SupplierAdmin(QMainWindow):
         elif not address:
             QMessageBox.information(self, "Sign up fail", "Address can not be blank.")
             return
+        
+        while True:
+            supplierID = Controller.createSupplierID()
+            if not self.sp.checkExist(supplierID=supplierID):
+                break
 
         self.sp.add(supplierID, supplierName, email, address)
 

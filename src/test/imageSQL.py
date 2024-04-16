@@ -97,7 +97,7 @@ class MainWindow(QMainWindow):
             host="localhost",
             user="root",
             password="",
-            database="computerstore"
+            database="imgSQL"
         )
 
         cursor = conn.cursor()

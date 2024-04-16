@@ -14,6 +14,7 @@ class Laptop(QMainWindow):
         self.pdd = Model_ProductDetail()
         
         self.productID = None
+        self.productName = None
 
         self.button()
     
@@ -36,14 +37,16 @@ class Laptop(QMainWindow):
         self.ui.update.clicked.connect(self.update)
         self.ui.clear.clicked.connect(self.clear)
     
-    def setProductID(self, productID):
+    def setProductID(self, productID, productName):
         self.productID = productID
+        self.productName = productName
     
     def management(self):
         self.general.showProductAdmin()
         self.general.page(7)
 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):
@@ -155,3 +158,5 @@ class Laptop(QMainWindow):
         self.ui.OS.setText(detail["OS"])
         self.ui.pin.setText(detail["pin"])
         self.ui.type.setCurrentText(detail["type"])
+
+        self.ui.productName.setText(self.productName)

@@ -9,7 +9,9 @@ USE ComputerStore;
 -- Tạo bảng Supplier
 CREATE TABLE Supplier (
     supplierID VARCHAR(15) PRIMARY KEY,
-    supplierName VARCHAR(100)
+    supplierName VARCHAR(100),
+    email VARCHAR(100),
+    address VARCHAR(100)
 );
 
 -- Tạo bảng Employee

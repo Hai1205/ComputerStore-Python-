@@ -49,6 +49,7 @@ class ProductAdmin(QMainWindow):
         self.totalCost = 0
         self.prePurchaseDate = None
         self.preCustomerID = None
+        self.preSupplierName = None
     
     def updateCombobox(self):
         self.ui.supplierName.clear()
@@ -78,8 +79,9 @@ class ProductAdmin(QMainWindow):
 
     def setCustomerID(self, customerID):
         self.customerID = customerID
-
+ 
     def statistic(self):
+        self.general.showSalesByYears()
         self.general.page(24)
 
     def signOut(self):
@@ -150,7 +152,7 @@ class ProductAdmin(QMainWindow):
             QMessageBox.information(self, "Error", "Please select the product.")
             return
         
-        self.general.setProductID(self.getProduct()["productID"])
+        self.general.setProductID(self.getProduct()["productID"], self.getProduct()["productName"])
         product = self.getProduct()
         type = product["type"]
         if type == "Laptop":
@@ -176,15 +178,6 @@ class ProductAdmin(QMainWindow):
             self.general.page(20)
 
     def add(self):
-        if self.employeeID is None:
-            employeeID = self.ep.selectRandom()
-            self.employeeID = employeeID["employeeID"]
-        if self.importID is None:
-            while True:
-                self.importID = Controller.createImportID()
-                if not self.iv.checkExist(self.importID):
-                    break
-
         product = self.getProduct()
         productID = product["productID"]
         supplierName = product["supplierName"]
@@ -230,17 +223,26 @@ class ProductAdmin(QMainWindow):
         elif not price.isdigit():
             QMessageBox.warning(self, "Sell Error", "Please enter an integer value for price.")
             return
-        
+
+        if self.employeeID is None:
+            employeeID = self.ep.selectRandom("Manager")
+            self.employeeID = employeeID["employeeID"]
         cost = int(quantity) * int(price)
         self.totalCost += cost
-
         if not productID:
             while True:
                 productID = Controller.createProductID()
                 if not self.pd.checkExist(productID):
                     break
-        if not self.ip.checkExist(self.importID):
-            self.ip.add(self.importID, self.employeeID, supplierName, self.purchaseDate.date(), self.totalCost)
+        if not self.ip.checkExist(self.importID) or self.preSupplierName != supplierName or self.importID is None:
+            result = self.sp.search(supplierName=supplierName)
+            supplierID = result[0]["supplierID"]
+            while True:
+                self.importID = Controller.createImportID()
+                if not self.iv.checkExist(self.importID):
+                    break
+            self.ip.add(self.importID, self.employeeID, supplierID, self.purchaseDate.date(), self.totalCost)
+            self.preSupplierName = supplierName
         self.ipd.add(self.importID, productID, int(quantity), int(price), cost)
         self.ip.update(self.importID, self.purchaseDate, self.totalCost)
 
@@ -248,7 +250,7 @@ class ProductAdmin(QMainWindow):
             self.pd.increaseQuantity(productID, int(quantity), int(price))
             QMessageBox.information(self, "Add Confirmation", "Product has been added successfully.")
         else:
-            self.general.detail(productID)
+            self.general.detail(productID, productName)
             self.pd.add(productID, supplierName, productName, type, int(quantity), int(warrantyTime), int(price))
             
             if type == "Laptop":
@@ -279,22 +281,6 @@ class ProductAdmin(QMainWindow):
         quantity = product["quantity"]
         warrantyTime = product["warrantyTime"]
         price = product["price"]
-        
-        warrantyID = None
-        while True:
-            warrantyID = Controller.createWarrantyID()
-            if not self.wrt.checkExist(warrantyID):
-                break
-        if self.employeeID is None:
-            employeeID = self.ep.selectRandom()
-            self.employeeID = employeeID["employeeID"]
-        if self.invoiceID is None or self.preCustomerID != customerID or self.purchaseDate != self.prePurchaseDate:
-            while True:
-                self.invoiceID = Controller.createInvoiceID()
-                if not self.iv.checkExist(self.invoiceID):
-                    break
-            self.prePurchaseDate = self.purchaseDate
-            self.preCustomerID = customerID
 
         if not customerID:
             QMessageBox.information(self, "Sell Error", "CustomerID can not be blank.")
@@ -321,13 +307,28 @@ class ProductAdmin(QMainWindow):
             QMessageBox.warning(self, "Sell Error", "Please enter an integer value for price.")
             return
 
+        warrantyID = None
+        while True:
+            warrantyID = Controller.createWarrantyID()
+            if not self.wrt.checkExist(warrantyID):
+                break
+        if self.employeeID is None:
+            employeeID = self.ep.selectRandom("Sale")
+            self.employeeID = employeeID["employeeID"]
+
         cost = int(quantity) * int(price)
         newDate = self.purchaseDate + timedelta(days=int(warrantyTime)*30+10)
         EXP = newDate.date()
         self.totalCost += cost
 
-        if not self.iv.checkExist(self.invoiceID):
+        if not self.iv.checkExist(self.invoiceID) or self.invoiceID is None or self.preCustomerID != customerID or self.purchaseDate != self.prePurchaseDate:
+            while True:
+                self.invoiceID = Controller.createInvoiceID()
+                if not self.iv.checkExist(self.invoiceID):
+                    break
             self.iv.add(self.invoiceID, self.employeeID, customerID, self.purchaseDate.date(), self.totalCost)
+            self.prePurchaseDate = self.purchaseDate
+            self.preCustomerID = customerID
         self.ivd.add(self.invoiceID, productID, warrantyID, int(quantity), int(price), cost)
         self.wrt.add(warrantyID, productID, self.invoiceID, customerID, self.purchaseDate.date(), int(warrantyTime), EXP)
         self.iv.update(self.invoiceID, self.purchaseDate, self.totalCost)

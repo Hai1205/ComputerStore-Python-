@@ -33,10 +33,10 @@ class Model_ProductDetail:
         finally:
             self.con.close()
         
-    def addRAM(self, productID, MFG, capacity, type, SPDspeed, CL, size):
+    def addRAM(self, productID, MFG, capacity, type, SPDspeed, CL):
         self.open()
-        query = f"""INSERT INTO importdetail (productID, MFG, capacity, type, SPDspeed, CL, size)
-                    VALUES ('{productID}', '{MFG}', '{capacity}', '{type}', '{SPDspeed}', '{CL}', '{size}');"""
+        query = f"""INSERT INTO importdetail (productID, MFG, capacity, type, SPDspeed, CL)
+                    VALUES ('{productID}', '{MFG}', '{capacity}', '{type}', '{SPDspeed}', '{CL}');"""
 
         try:
             self.cursor.execute(query)
@@ -89,10 +89,10 @@ class Model_ProductDetail:
         finally:
             self.con.close()
 
-    def addKeyboard(self, productID, MFG, layout, size, LED, keycap, switch, pin, hotswap):
+    def addKeyboard(self, productID, MFG, layout, LED, keycap, switch, hotswap):
         self.open()
-        query = f"""INSERT INTO importdetail (productID, MFG, layout, size, LED, keycap, switch, pin, hotswap)
-                    VALUES ('{productID}', '{MFG}', '{layout}', '{size}', '{LED}', '{keycap}', '{switch}', '{pin}', '{hotswap}');"""
+        query = f"""INSERT INTO importdetail (productID, MFG, layout, LED, keycap, switch, pin, hotswap)
+                    VALUES ('{productID}', '{MFG}', '{layout}', '{LED}', '{keycap}', '{switch}', '{hotswap}');"""
 
         try:
             self.cursor.execute(query)
@@ -186,7 +186,7 @@ class Model_ProductDetail:
         finally:
             self.con.close()
         
-    def updateRAM(self, productID, MFG, capacity, type, SPDspeed, CL, size):
+    def updateRAM(self, productID, MFG, capacity, type, SPDspeed, CL):
         self.open()
 
         condition = ""
@@ -207,11 +207,6 @@ class Model_ProductDetail:
                 condition += f", CL = '{CL}'"
             else:
                 condition += f"CL = '{CL}'"
-        if size:
-            if condition:
-                condition += f", size = '{size}'"
-            else:
-                condition += f"size = '{size}'"
         if type:
             if condition:
                 condition += f", type = '{type}'"
@@ -337,7 +332,7 @@ class Model_ProductDetail:
         finally:
             self.con.close()
     
-    def updateKeyboard(self, productID, MFG, layout, size, LED, keycap, switch, pin, hotswap):
+    def updateKeyboard(self, productID, MFG, layout, LED, keycap, switch, hotswap):
         self.open()
         
         condition = ""
@@ -353,11 +348,6 @@ class Model_ProductDetail:
                 condition += f", LED = '{LED}'"
             else:
                 condition += f"LED = '{LED}'"
-        if size:
-            if condition:
-                condition += f", size = '{size}'"
-            else:
-                condition += f"size = '{size}'"
         if keycap:
             if condition:
                 condition += f", keycap = '{keycap}'"
@@ -368,11 +358,6 @@ class Model_ProductDetail:
                 condition += f", switch = '{switch}'"
             else:
                 condition += f"switch = '{switch}'"
-        if pin:
-            if condition:
-                condition += f", pin = '{pin}'"
-            else:
-                condition += f"pin = '{pin}'"
         if hotswap:
             if condition:
                 condition += f", hotswap = '{hotswap}'"

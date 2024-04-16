@@ -34,7 +34,7 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="productName">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -49,7 +49,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Product detail - Random access memory(RAM)</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -60,7 +60,7 @@
       <rect>
        <x>0</x>
        <y>70</y>
-       <width>511</width>
+       <width>591</width>
        <height>451</height>
       </rect>
      </property>
@@ -71,65 +71,59 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="6" column="1">
-       <widget class="QLineEdit" name="size"/>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Manufacturing date</string>
+         <string>Manufacturing date:</string>
         </property>
        </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="SPDspeed"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Capacity</string>
+         <string>Capacity:</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="capacity"/>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLineEdit" name="type"/>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_7">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Size</string>
+         <string>CAS Latency:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="MFG"/>
       </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="type">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Type</string>
+         <string>Type:</string>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
        <widget class="QLineEdit" name="CL"/>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>CAS Latency</string>
-        </property>
-       </widget>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="capacity"/>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Serial Presence Detect speed</string>
+         <string>Serial Presence Detect speed:</string>
         </property>
        </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QLineEdit" name="SPDspeed"/>
       </item>
      </layout>
     </widget>
