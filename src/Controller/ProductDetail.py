@@ -38,7 +38,6 @@ class ProductDetail(QMainWindow):
         self.ui.supplierName.setText(self.product["supplierName"])
         self.ui.productName.setText(self.product["productName"])
         self.ui.type.setText(self.product["type"])
-        self.ui.quantity.setText(self.product["quantity"])
         self.ui.warrantyTime.setText(self.product["warrantyTime"])
         self.ui.price.setText(self.product["price"])
 

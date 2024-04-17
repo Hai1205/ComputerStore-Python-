@@ -149,7 +149,7 @@ class ProductAdmin(QMainWindow):
         
     def detail(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Error", "Please select the product.")
+            QMessageBox.information(self, "Error", "Please select a product.")
             return
         
         self.general.setProductID(self.getProduct()["productID"], self.getProduct()["productName"])
@@ -272,7 +272,7 @@ class ProductAdmin(QMainWindow):
     
     def sell(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Sell Error", "Please select the product.")
+            QMessageBox.information(self, "Sell Error", "Please select a product.")
             return
 
         product = self.getProduct()
@@ -339,7 +339,7 @@ class ProductAdmin(QMainWindow):
 
     def update(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Update Error", "Please select the product.")
+            QMessageBox.information(self, "Update Error", "Please select a product.")
             return
         
         product = self.getProduct()
@@ -385,12 +385,13 @@ class ProductAdmin(QMainWindow):
         self.ui.price.clear()
         self.ui.type.setCurrentIndex(0)
         self.ui.warrantyTime.clear()
+        self.selectRow = -1
         self.search()
         self.setEnabled(True)
 
     def delete_2(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Delete Error", "Please select the product.")
+            QMessageBox.information(self, "Delete Error", "Please select a product.")
             return
         confirmRefund = QMessageBox.question(self, "Warning", "Are you sure want to delete?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

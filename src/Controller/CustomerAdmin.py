@@ -138,7 +138,7 @@ class CustomerAdmin(QMainWindow):
 
     def update(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Update Error", "Please select your import.")
+            QMessageBox.information(self, "Update Error", "Please select a customer.")
             return
         
         customer = self.getCustomer()
@@ -215,7 +215,7 @@ class CustomerAdmin(QMainWindow):
 
     def delete_2(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Delete Error", "Please select the customer.")
+            QMessageBox.information(self, "Delete Error", "Please select a customer.")
             return
         confirmRefund = QMessageBox.question(self, "Warning", "Are you sure want to delete?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

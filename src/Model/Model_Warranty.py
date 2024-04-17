@@ -152,48 +152,24 @@ class Model_Warranty:
         finally:
             self.dropListOfCustomer()
             self.con.close()
-    
-    def expiryList(self, warrantyID=None, productID=None, invoiceID=None, customerID=None, purchaseDate=None, warrantyTime=None, EXP=None):
-        self.open()
-        self.listOfCustomer(customerID)
 
-        condition = ""
-        if warrantyID:
-            condition += f"warrantyID LIKE '%{warrantyID}%'"
+    def expiryList(self, customerID=None):
+        self.open()
+
+        if customerID is None:
+            condition = "WHERE EXP > CURRENT_DATE();"
+            params = {}
         else:
-            if productID:
-                if condition:
-                    condition += f" and productID LIKE '%{productID}%'"
-                else: 
-                    condition += f"productID LIKE '%{productID}%'"
-            if invoiceID:
-                if condition:
-                    condition += f" and invoiceID LIKE '%{invoiceID}%'"
-                else:
-                    condition += f"invoiceID LIKE '%{invoiceID}%'"
-            if purchaseDate:
-                if condition:
-                    condition += f" and purchaseDate LIKE '%{purchaseDate}%'"
-                else:
-                    condition += f"purchaseDate LIKE '%{purchaseDate}%'"
-            if warrantyTime:
-                if condition:
-                    condition += f" and warrantyTime LIKE '%{warrantyTime}%'"
-                else:
-                    condition += f"warrantyTime LIKE '%{warrantyTime}%'"
-            if EXP:
-                if condition:
-                    condition += f" and EXP LIKE '%{EXP}%'"
-                else:
-                    condition += f"EXP LIKE '%{EXP}%'"
-        
-        if condition:
-            query = f"SELECT * FROM listOfCustomer WHERE {condition} and EXP > CURRENT_DATE();;"
-        else:
-            query = f"SELECT * FROM listOfCustomer WHERE EXP > CURRENT_DATE();;"
+            condition = "WHERE customerID = %(customerID)s AND EXP > CURRENT_DATE();"
+            params = {'customerID': customerID}
+
+        query = f"""
+            SELECT * FROM warranty
+            {condition}
+        """
 
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query, params)
             result = self.cursor.fetchall()
             return result
         except Exception as e:

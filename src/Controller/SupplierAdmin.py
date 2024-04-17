@@ -103,7 +103,7 @@ class SupplierAdmin(QMainWindow):
             QMessageBox.information(self, "Add Error", "Infornation cannot be entered SupplierID.")
             return
         elif not supplierName:
-            QMessageBox.information(self, "Sign up fail", "ProductID can not be blank.")
+            QMessageBox.information(self, "Sign up fail", "Supplier name can not be blank.")
             return
         elif self.sp.checkExist(supplierName=supplierName):
             QMessageBox.information(self, "Sign up fail", "Supplier name already exists.")
@@ -192,6 +192,7 @@ class SupplierAdmin(QMainWindow):
 
     def setEnabled(self, bool):
         self.ui.supplierID.setEnabled(bool)
+        self.ui.add.setEnabled(bool)
 
     def clear(self):
         self.selectRow = -1

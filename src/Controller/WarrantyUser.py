@@ -6,8 +6,6 @@ from View.WarrantyUser import Ui_WarrantyUser
 
 from Model.Model_Warranty import Model_Warranty
 
-from Controller.Controller import Controller
-
 class WarrantyUser(QMainWindow):
     def __init__(self, general):
         super().__init__()
@@ -41,12 +39,15 @@ class WarrantyUser(QMainWindow):
         self.ui.clear.clicked.connect(self.clear)
 
     def product(self):
+        self.general.showProductUser()
         self.general.page(11)
     
     def cart(self):
+        self.general.showCartUser()
         self.general.page(10)
 
     def setting(self):
+        self.general.showSettingUser()
         self.general.page(12)
 
     def signOut(self):
@@ -57,22 +58,7 @@ class WarrantyUser(QMainWindow):
 
     def expiryList(self):
         warranty = self.getWarranty()
-
-        purchaseDate = warranty["purchaseDate"]
-        if Controller.compare_dates(datetime.strptime(purchaseDate, "%Y-%m-%d").date(), datetime(2000, 1, 1).date()):
-            purchaseDate = None
-        EXP = warranty["EXP"]
-        if Controller.compare_dates(datetime.strptime(EXP, "%Y-%m-%d").date(), datetime(2000, 1, 1).date()):
-            EXP = None
-
-        warrrantyResult = self.wrt.expiryList(warrantyID=warranty["warrantyID"],
-                                        productID=warranty["productID"],
-                                        invoiceID=warranty["invoiceID"],
-                                        customerID=self.customerID,
-                                        purchaseDate=purchaseDate,
-                                        warrantyTime=warranty["warrantyTime"],
-                                        EXP=EXP
-        )
+        warrrantyResult = self.wrt.expiryList(customerID=self.customerID)
         self.showData(warrrantyResult)
 
     def showData(self, warrrantyResult):
@@ -134,4 +120,7 @@ class WarrantyUser(QMainWindow):
         self.ui.productID.clear()
         self.ui.invoiceID.clear()
         self.ui.warrantyTime.clear()
+        self.ui.purchaseDate.setDate(QDate.currentDate())
+        EXP = datetime.now() + timedelta(days=24*30+10)
+        self.ui.EXP.setDate(EXP.date())
         self.search()

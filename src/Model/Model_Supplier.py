@@ -19,7 +19,7 @@ class Model_Supplier:
 
         self.cursor = self.con.cursor(dictionary=True)
     
-    def checkExist(self, supplierID, supplierName):
+    def checkExist(self, supplierID=None, supplierName=None):
         self.open()
         condition = ""
         if supplierID:

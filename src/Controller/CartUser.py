@@ -201,5 +201,6 @@ class CartUser(QMainWindow):
         self.ui.quantity.clear()
         self.ui.price.clear()
         self.ui.cost.clear()
+        self.selectRow = -1
         self.search()
         self.setEnabled(True)

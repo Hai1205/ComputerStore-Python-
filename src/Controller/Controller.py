@@ -32,13 +32,13 @@ class Controller:
     def createWarrantyID():
         return "WRT" + str(random.randint(10**9, (10**10)-1))
 
-    # @staticmethod
-    # def compare_dates(date1, date2):
-    #     return date1.year == date2.year and date1.month == date2.month and date1.day == date2.day
+    @staticmethod
+    def compare_dates(date1, date2):
+        return date1.year == date2.year and date1.month == date2.month and date1.day == date2.day
 
-    # @staticmethod
-    # def strToDate(date):
-    #     return datetime.strptime(date, "%d/%m/%Y").strftime("%Y-%m-%d")
+    @staticmethod
+    def strToDate(date):
+        return datetime.strptime(date, "%d/%m/%Y").strftime("%Y-%m-%d")
 
     @staticmethod
     def checkPhone(phone):

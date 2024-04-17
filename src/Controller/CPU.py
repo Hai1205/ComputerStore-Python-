@@ -88,7 +88,7 @@ class CPU(QMainWindow):
         self.general.page(4)
 
     def back(self):
-        self.general.showProductAdmin()
+        # self.general.showProductAdmin()
         self.general.page(7)
 
     def getDetail(self):

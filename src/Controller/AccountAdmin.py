@@ -210,7 +210,7 @@ At least 1 special character.""")
 
     def delete_2(self):
         if self.selectRow == -1:
-            QMessageBox.information(self, "Delete Error", "Please select the account.")
+            QMessageBox.information(self, "Delete Error", "Please select a account.")
             return
         confirmRefund = QMessageBox.question(self, "Warning", "Are you sure want to delete?",
                                                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)

@@ -42,7 +42,6 @@ class WarrantyAdmin(QMainWindow):
         self.ui.select.clicked.connect(self.select)
         self.ui.add.clicked.connect(self.add)
         self.ui.expiryList.clicked.connect(self.expiryList)
-        self.ui.update.clicked.connect(self.update)
         self.ui.search.clicked.connect(self.search)
         self.ui.clear.clicked.connect(self.clear)
         self.ui.delete_2.clicked.connect(self.delete_2)
@@ -151,41 +150,8 @@ class WarrantyAdmin(QMainWindow):
         self.clear()
 
     def expiryList(self):
-        warranty = self.getWarranty()
-
-        purchaseDate = warranty["purchaseDate"]
-        if Controller.compare_dates(datetime.strptime(purchaseDate, "%Y-%m-%d").date(), datetime(2000, 1, 1).date()):
-            purchaseDate = None
-        EXP = warranty["EXP"]
-        if Controller.compare_dates(datetime.strptime(EXP, "%Y-%m-%d").date(), datetime(2000, 1, 1).date()):
-            EXP = None
-
-        warrrantyResult = self.wrt.expiryList(warrantyID=warranty["warrantyID"],
-                                        productID=warranty["productID"],
-                                        invoiceID=warranty["invoiceID"],
-                                        customerID=self.customerID,
-                                        purchaseDate=purchaseDate,
-                                        warrantyTime=warranty["warrantyTime"],
-                                        EXP=EXP
-        )
+        warrrantyResult = self.wrt.expiryList()
         self.showData(warrrantyResult)
-
-    def update(self):
-        if self.selectRow == -1:
-            QMessageBox.information(self, "Update Error", "Please select a waranty.")
-            return
-        
-        warranty = self.getWarranty()
-        warrantyID = warranty["warrantyID"]
-        purchaseDate = warranty["purchaseDate"]
-        warrantyTime = warranty["warrantyTime"]
-
-        if not warrantyTime.isdigit():
-            QMessageBox.warning(self, "Warning", "Please enter an integer value into a warranty time.")
-            return
-
-        self.wrt.update(warrantyID, purchaseDate, int(warrantyTime))
-        self.search()
     
     def setEnabled(self, bool):
         self.ui.warrantyID.setEnabled(bool)
@@ -262,6 +228,9 @@ class WarrantyAdmin(QMainWindow):
         self.ui.invoiceID.clear()
         self.ui.customerID.clear()
         self.ui.warrantyTime.clear()
+        self.ui.purchaseDate.setDate(QDate.currentDate())
+        EXP = datetime.now() + timedelta(days=24*30+10)
+        self.ui.EXP.setDate(EXP.date())
         self.search()
         self.setEnabled(True)
 

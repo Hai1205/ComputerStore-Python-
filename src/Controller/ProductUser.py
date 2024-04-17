@@ -138,12 +138,18 @@ class ProductUser(QMainWindow):
         self.ui.price.clear()
         self.ui.type.setCurrentIndex(0)
         self.ui.warrantyTime.clear()
+        self.selectRow = -1
         self.search()
         self.setEnabled(True)
 
     def order(self):
         if self.selectRow == -1:
             QMessageBox.information(self, "Order Error", "Please select a product.")
+            return
+
+        confirmSignout = QMessageBox.question(self, "Order Confirmation", "Are you sure want to buy this proudct?",
+                                               QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if confirmSignout == QMessageBox.StandardButton.No:
             return
         
         warrantyID = None
@@ -152,7 +158,7 @@ class ProductUser(QMainWindow):
             if not self.wrt.checkExist(warrantyID):
                 break
         if self.employeeID is None:
-            result = self.ep.selectRandom()
+            result = self.ep.selectRandom(position="Sale")
             self.employeeID = result["employeeID"]
         if self.invoiceID is None:
             while True:
