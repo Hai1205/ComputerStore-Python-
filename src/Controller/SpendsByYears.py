@@ -70,7 +70,7 @@ class SpendsByYears(QMainWindow):
         plt.bar(listYears, listTotal, color='skyblue', width=width)
         plt.xlabel('Years', fontsize=14)
         plt.ylabel('Total cost', fontsize=14)
-        plt.title('Sales by Years', fontsize=16)
+        plt.title('Spends by Years', fontsize=16)
         plt.grid(True, linestyle='--', alpha=0.7)
 
         for i in range(len(listYears)):
